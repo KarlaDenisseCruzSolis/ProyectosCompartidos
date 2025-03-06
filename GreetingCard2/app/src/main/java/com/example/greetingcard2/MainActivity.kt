@@ -1,6 +1,7 @@
 package com.example.greetingcard2
 // Este es un comentario de prueba para Git 1 en visual studio code
 //Este es un cambio para probar conexión karla a yahir
+//Mensaje de Karla a Yahir
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
