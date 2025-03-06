@@ -3,6 +3,8 @@ package com.example.greetingcard2
 //Este es un cambio para probar conexión karla a yahir
 
 //Ejecuta el programa
+
+//Mensaje de Karla a Yahir
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
