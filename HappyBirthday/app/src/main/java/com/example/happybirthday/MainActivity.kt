@@ -28,8 +28,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background // Fondo de la interfaz
                 ) {
                     GreetingText(
-                        message = "Happy Birthday Karla!",
-                        from = "From Martin",
+                        message = "Happy Birthday Yahir!",
+                        from = "From Karla",
                         modifier = Modifier.padding(8.dp)// Añadir padding alrededor del contenido
                     )
                 }
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) { // Se usa Box para superponer la imagen y el texto
         Image( // Se agrega la imagen de fondo
-            painter = painterResource(R.drawable.androidparty), // Se carga la imagen
+            painter = painterResource(R.drawable.androidparty2), // Se carga la imagen
             contentDescription = null,// No es necesario describir la imagen aquí
             contentScale = ContentScale.Crop, //Ajuste de escala
             alpha = 0.6f, // Opacidad al 50%
@@ -76,8 +76,8 @@ fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
 fun BirthdayCardPreview() {
     HappyBirthdayTheme {// Aplica el tema a la vista previa
         GreetingText(
-            message = "Happy Birthday Karla!",
-            from = "From Martin"
+            message = "Happy Birthday Yahir!",
+            from = "From Karla"
         )
     }
 }
