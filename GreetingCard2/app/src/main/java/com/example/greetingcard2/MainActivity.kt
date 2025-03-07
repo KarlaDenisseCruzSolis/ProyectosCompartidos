@@ -1,6 +1,6 @@
 package com.example.greetingcard2
 
-import android.os.Bundle
+import android.os.Bundle //Comienzo de importaciones
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
