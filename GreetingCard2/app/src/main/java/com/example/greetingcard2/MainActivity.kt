@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 // Función que muestra un saludo en pantalla
 @Composable
 fun Greeting(name: String) {
-    Surface(color = Color.Green) {// Contenedor con fondo de color magenta
+    Surface(color = Color.Cyan) {// Contenedor con fondo de color magenta
         Text(text = "Hi, $name! Modificando Karla.", modifier = Modifier.padding(24.dp))// Muestra el texto con el nombre recibido y Agrega un margen de 24dp alrededor del texto
     }
 }
