@@ -37,8 +37,8 @@ class MainActivity : ComponentActivity() {
 // Función que muestra un saludo en pantalla
 @Composable
 fun Greeting(name: String) {
-    Surface(color = Color.Magenta) {// Contenedor con fondo de color magenta
-        Text(text = "Hi, $name! Ya modifiqué (Soy Yahir).", modifier = Modifier.padding(24.dp))// Muestra el texto con el nombre recibido y Agrega un margen de 24dp alrededor del texto
+    Surface(color = Color.Green) {// Contenedor con fondo de color magenta
+        Text(text = "Hi, $name! Modificando Karla.", modifier = Modifier.padding(24.dp))// Muestra el texto con el nombre recibido y Agrega un margen de 24dp alrededor del texto
     }
 }
 // Función que muestra una vista previa en el editor de Android Studio
@@ -46,7 +46,7 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     GreetingCard2Theme {
-        Greeting("Karla")// Llama a la función Greeting con un nombre de prueba
+        Greeting("Karla y Yahir")// Llama a la función Greeting con un nombre de prueba
     }
     
 }
