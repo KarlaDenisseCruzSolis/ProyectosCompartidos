@@ -1,4 +1,4 @@
-package com.example.happybirthday
+package com.example.happybirthday // Aplicacion de cumpleaños feliz
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
