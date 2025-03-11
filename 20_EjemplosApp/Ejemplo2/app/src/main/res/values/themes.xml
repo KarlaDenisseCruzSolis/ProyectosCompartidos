@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <!-- Usa un tema basado en AppCompat -->
+        <style name="Theme.Ejemplo2" parent="Theme.AppCompat.Light.NoActionBar">
+        </style>
+</resources>
