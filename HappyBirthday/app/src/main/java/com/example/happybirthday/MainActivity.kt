@@ -28,8 +28,8 @@ class MainActivity : ComponentActivity() { // Clase principal de la aplicación
                     color = MaterialTheme.colorScheme.background // Usa el color de fondo del tema
                 ) {
                     GreetingText( // Llama a la función GreetingText con el mensaje de felicitación
-                        message = "Happy Birthday Karla!", // Mensaje de cumpleaños
-                        from = "From Martin", // Nombre del remitente
+                        message = "Happy Birthday Yahir!", // Mensaje de cumpleaños
+                        from = "From Karla", // Nombre del remitente
                         modifier = Modifier.padding(8.dp) // Agrega un margen alrededor del contenido
                     )
                 }
@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() { // Clase principal de la aplicación
 fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize()) { // Box permite superponer elementos
         Image( // Agrega la imagen de fondo
-            painter = painterResource(R.drawable.androidparty), // Carga la imagen desde los recursos
+            painter = painterResource(R.drawable.androidparty2), // Carga la imagen desde los recursos
             contentDescription = null, // No se necesita descripción accesible
             contentScale = ContentScale.Crop, // Ajusta la imagen para llenar el espacio sin distorsionarse
             alpha = 0.6f, // Ajusta la opacidad de la imagen al 60%
@@ -76,8 +76,8 @@ fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
 fun BirthdayCardPreview() {
     HappyBirthdayTheme {// Aplica el tema a la vista previa
         GreetingText(
-            message = "Happy Birthday Karla!", // Mensaje de ejemplo
-            from = "From Martin" // Nombre de quien envía la felicitación
+            message = "Happy Birthday Yahir!", // Mensaje de ejemplo
+            from = "From Karla" // Nombre de quien envía la felicitación
         )
     }
 }
