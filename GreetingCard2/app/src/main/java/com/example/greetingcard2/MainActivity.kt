@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() { // La actividad principal de la aplic
 
 @Composable // Indica que esta función es un componente de la UI en Compose.
 fun Greeting(name: String) { // Función que recibe un nombre y muestra un saludo.
-    Surface(color = Color.Cyan) { // Crea una superficie con un color de fondo cian.
+    Surface(color = Color.Green) { // Crea una superficie con un color de fondo cian.
         Text(text = "Hi, $name! Modificando Karla.", modifier = Modifier.padding(24.dp)) // Muestra un texto con el nombre y un mensaje. Añade un padding de 24dp.
     }
 }
@@ -42,6 +42,6 @@ fun Greeting(name: String) { // Función que recibe un nombre y muestra un salud
 @Composable // Anotación para indicar que la función es un componente de la UI en Compose.
 fun DefaultPreview() { // Función para la vista previa de la UI.
     GreetingCard2Theme { // Aplica el tema personalizado a la UI de la vista previa.
-        Greeting("Karla y Yahir") // Muestra un saludo con los nombres "Karla y Yahir" en la vista previa.
+        Greeting("we are Karla y Yahir") // Muestra un saludo con los nombres "Karla y Yahir" en la vista previa.
     }
 }
