@@ -1,4 +1,4 @@
-package com.example.ejemplo10
+package com.example.ejemplo10 // Define el paquete donde se encuentra el archivo
 
 import android.os.Bundle
 import android.widget.Button
@@ -13,31 +13,31 @@ import java.util.TimeZone
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var timeTextView: TextView
-    private lateinit var showTimeButton: Button
+    private lateinit var timeTextView: TextView // Declara la variable para el TextView que mostrará la hora
+    private lateinit var showTimeButton: Button  // Declara la variable para el botón que muestra la hora actual
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onCreate(savedInstanceState: Bundle?) { // Metodo llamado cuando la actividad es creada
+        super.onCreate(savedInstanceState)  // Llama al constructor de la clase base
+        setContentView(R.layout.activity_main) // Establece el layout de la actividad
 
         // Inicializar vistas
-        timeTextView = findViewById(R.id.timeTextView)
-        showTimeButton = findViewById(R.id.showTimeButton)
+        timeTextView = findViewById(R.id.timeTextView) // Inicializa el TextView para mostrar la hora
+        showTimeButton = findViewById(R.id.showTimeButton) // Inicializa el botón para mostrar la hora
 
         // Establecer el listener de clics para el botón
-        showTimeButton.setOnClickListener {
-            showCurrentTime()
+        showTimeButton.setOnClickListener { // Cuando el usuario hace clic en el botón
+            showCurrentTime() // Llama a la función para mostrar la hora actual
         }
     }
-
+    // Función que obtiene y muestra la hora actual
     private fun showCurrentTime() {
-        val currentTime = Calendar.getInstance()
-        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val currentTime = Calendar.getInstance() // Obtiene una instancia de Calendar con la hora actual
+        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault()) // Define el formato de hora (horas, minutos, segundos)
 
         // Configurar la zona horaria del dispositivo
         timeFormat.timeZone = TimeZone.getDefault()
 
-        val formattedTime = timeFormat.format(currentTime.time)
-        timeTextView.text = "Hora actual: $formattedTime"
+        val formattedTime = timeFormat.format(currentTime.time) // Formatea la hora actual según el formato definido
+        timeTextView.text = "Hora actual: $formattedTime" // Muestra la hora formateada en el TextView
     }
 }
