@@ -4,5 +4,5 @@
 package my.program
 
 fun main(args: Array<String>) {
-    println("Hello, world!")
+    println("¡Bienvenidos, estoy modificacndo Hola Mundo!") // Cambié el mensaje original por uno nuevo
 }
