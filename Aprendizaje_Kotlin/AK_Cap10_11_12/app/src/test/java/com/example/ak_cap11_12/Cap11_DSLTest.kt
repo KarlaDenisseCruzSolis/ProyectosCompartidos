@@ -1,7 +1,7 @@
 package com.example.ak_cap11_12  // Define el paquete donde se encuentra la clase
 
 import org.junit.Test  // Importa la anotación @Test de JUnit para pruebas unitarias
-import org.junit.Assert.assertEquals  // Importa el método assertEquals para validaciones
+import org.junit.Assert.assertEquals  // Importa el metodo assertEquals para validaciones
 
 // Función de extensión infix que compara si un valor es igual al esperado
 infix fun <T> T?.shouldBe(expected: T?) = assertEquals(expected, this)
