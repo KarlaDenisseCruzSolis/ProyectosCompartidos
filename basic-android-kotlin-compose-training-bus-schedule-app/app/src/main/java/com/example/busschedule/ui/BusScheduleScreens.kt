@@ -65,25 +65,27 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+// Definición de las pantallas que se utilizarán en la navegación
 enum class BusScheduleScreens {
-    FullSchedule,
-    RouteSchedule
+    FullSchedule, // Lista completa de horarios
+    RouteSchedule // Horario filtrado por ruta específica
 }
 
+// Función principal que lanza la aplicación de horarios de autobuses
 @Composable
 fun BusScheduleApp(
     viewModel: BusScheduleViewModel = viewModel(factory = BusScheduleViewModel.factory)
 ) {
-    val navController = rememberNavController()
-    val fullScheduleTitle = stringResource(R.string.full_schedule)
-    var topAppBarTitle by remember { mutableStateOf(fullScheduleTitle) }
-    val fullSchedule by viewModel.getFullSchedule().collectAsState(emptyList())
-    val onBackHandler = {
+    val navController = rememberNavController() // Controlador de navegación
+    val fullScheduleTitle = stringResource(R.string.full_schedule) // Título por defecto
+    var topAppBarTitle by remember { mutableStateOf(fullScheduleTitle) } // Estado del título
+    val fullSchedule by viewModel.getFullSchedule().collectAsState(emptyList())  // Observa la lista completa de horarios
+    val onBackHandler = { // Función que se llama al presionar "Atrás"
         topAppBarTitle = fullScheduleTitle
         navController.navigateUp()
     }
 
-    Scaffold(
+    Scaffold(// Scaffold con barra superior personalizada
         topBar = {
             BusScheduleTopAppBar(
                 title = topAppBarTitle,
@@ -92,11 +94,11 @@ fun BusScheduleApp(
             )
         }
     ) { innerPadding ->
-        NavHost(
+        NavHost( // Configuración del NavHost que gestiona la navegación entre pantallas
             navController = navController,
             startDestination = BusScheduleScreens.FullSchedule.name
         ) {
-            composable(BusScheduleScreens.FullSchedule.name) {
+            composable(BusScheduleScreens.FullSchedule.name) {// Pantalla de horario completo
                 FullScheduleScreen(
                     busSchedules = fullSchedule,
                     contentPadding = innerPadding,
@@ -108,7 +110,7 @@ fun BusScheduleApp(
                     }
                 )
             }
-            val busRouteArgument = "busRoute"
+            val busRouteArgument = "busRoute" // Pantalla de horario filtrado por parada específica
             composable(
                 route = BusScheduleScreens.RouteSchedule.name + "/{$busRouteArgument}",
                 arguments = listOf(navArgument(busRouteArgument) { type = NavType.StringType })
@@ -127,7 +129,7 @@ fun BusScheduleApp(
     }
 }
 
-@Composable
+@Composable // Composable que representa la pantalla con todos los horarios
 fun FullScheduleScreen(
     busSchedules: List<BusSchedule>,
     onScheduleClick: (String) -> Unit,
@@ -142,6 +144,7 @@ fun FullScheduleScreen(
     )
 }
 
+// Composable para la pantalla de horarios filtrada por parada específica
 @Composable
 fun RouteScheduleScreen(
     stopName: String,
@@ -159,6 +162,7 @@ fun RouteScheduleScreen(
     )
 }
 
+// Composable genérico que muestra una lista de horarios
 @Composable
 fun BusScheduleScreen(
     busSchedules: List<BusSchedule>,
@@ -167,19 +171,20 @@ fun BusScheduleScreen(
     stopName: String? = null,
     onScheduleClick: ((String) -> Unit)? = null,
 ) {
+    // Determina el texto a mostrar dependiendo de si se proporciona una parada
     val stopNameText = if (stopName == null) {
         stringResource(R.string.stop_name)
     } else {
         "$stopName ${stringResource(R.string.route_stop_name)}"
     }
     val layoutDirection = LocalLayoutDirection.current
-    Column(
+    Column( // Estructura de columna con los encabezados y la lista
         modifier = modifier.padding(
             start = contentPadding.calculateStartPadding(layoutDirection),
             end = contentPadding.calculateEndPadding(layoutDirection),
         )
     ) {
-        Row(
+        Row(// Fila con encabezados de la lista
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
@@ -194,8 +199,8 @@ fun BusScheduleScreen(
             Text(stopNameText)
             Text(stringResource(R.string.arrival_time))
         }
-        Divider()
-        BusScheduleDetails(
+        Divider()  // Línea divisoria
+        BusScheduleDetails( // Llama a la función que muestra la lista de detalles
             contentPadding = PaddingValues(
                 bottom = contentPadding.calculateBottomPadding()
             ),
@@ -222,7 +227,7 @@ fun BusScheduleDetails(
         modifier = modifier,
         contentPadding = contentPadding,
     ) {
-        items(
+        items(// Cada elemento de la lista representa un horario de autobús
             items = busSchedules,
             key = { busSchedule -> busSchedule.id }
         ) { schedule ->
@@ -235,7 +240,7 @@ fun BusScheduleDetails(
                     .padding(dimensionResource(R.dimen.padding_medium)),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (onScheduleClick == null) {
+                if (onScheduleClick == null) { // Si no hay función de clic, se muestra "--"
                     Text(
                         text = "--",
                         style = MaterialTheme.typography.bodyLarge.copy(
@@ -246,7 +251,7 @@ fun BusScheduleDetails(
                         modifier = Modifier.weight(1f)
                     )
                 } else {
-                    Text(
+                    Text(// Si sí hay función de clic, se muestra el nombre de la parada
                         text = schedule.stopName,
                         style = MaterialTheme.typography.bodyLarge.copy(
                             fontSize = dimensionResource(R.dimen.font_large).value.sp,
@@ -254,7 +259,7 @@ fun BusScheduleDetails(
                         )
                     )
                 }
-                Text(
+                Text(// Formatea la hora de llegada
                     text = SimpleDateFormat("h:mm a", Locale.getDefault())
                         .format(Date(schedule.arrivalTimeInMillis.toLong() * 1000)),
                     style = MaterialTheme.typography.bodyLarge.copy(
@@ -268,7 +273,7 @@ fun BusScheduleDetails(
         }
     }
 }
-
+// Barra superior con título y botón "Atrás" si aplica
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BusScheduleTopAppBar(
@@ -299,7 +304,7 @@ fun BusScheduleTopAppBar(
         )
     }
 }
-
+// Vista previa de la pantalla de horarios completos
 @Preview(showBackground = true)
 @Composable
 fun FullScheduleScreenPreview() {
@@ -316,7 +321,7 @@ fun FullScheduleScreenPreview() {
         )
     }
 }
-
+// Vista previa de la pantalla de una parada específica
 @Preview(showBackground = true)
 @Composable
 fun RouteScheduleScreenPreview() {
