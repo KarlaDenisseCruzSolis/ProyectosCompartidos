@@ -21,12 +21,13 @@ import androidx.room.PrimaryKey
 
 /**
  * Entity data class represents a single row in the database.
+ * (Esta clase representa una entidad de la base de datos. Cada instancia de Item será una fila en la tabla "items")
  */
-@Entity(tableName = "items")
-data class Item(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val name: String,
-    val price: Double,
-    val quantity: Int
+@Entity(tableName = "items")// Anotación que indica que esta clase representa una tabla de base de datos llamada "items"
+data class Item(// Define una clase de datos llamada Item
+    @PrimaryKey(autoGenerate = true) // Especifica que 'id' es la clave primaria y se generará automáticamente
+    val id: Int = 0,// Identificador único para cada item, por defecto es 0 (se sobreescribe automáticamente)
+    val name: String,// Nombre del artículo
+    val price: Double, // Precio del artículo
+    val quantity: Int // Cantidad disponible del artículo en inventario
 )
