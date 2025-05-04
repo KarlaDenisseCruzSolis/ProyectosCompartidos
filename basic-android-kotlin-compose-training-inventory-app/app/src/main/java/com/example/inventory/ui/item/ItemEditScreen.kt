@@ -36,7 +36,7 @@ import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
-
+// Objeto que define la información de navegación hacia esta pantalla de edición
 object ItemEditDestination : NavigationDestination {
     override val route = "item_edit"
     override val titleRes = R.string.edit_item_title
@@ -47,10 +47,10 @@ object ItemEditDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemEditScreen(
-    navigateBack: () -> Unit,
-    onNavigateUp: () -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    navigateBack: () -> Unit, // Función para volver a la pantalla anterior
+    onNavigateUp: () -> Unit,  // Función para manejar navegación ascendente (back arrow en top bar)
+    modifier: Modifier = Modifier, // Modificador para aplicar al layout
+    viewModel: ItemEditViewModel = viewModel(factory = AppViewModelProvider.Factory)  // ViewModel de esta pantalla
 ) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -87,7 +87,7 @@ fun ItemEditScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true) // Muestra una vista previa de la pantalla en Android Studio
 @Composable
 fun ItemEditScreenPreview() {
     InventoryTheme {

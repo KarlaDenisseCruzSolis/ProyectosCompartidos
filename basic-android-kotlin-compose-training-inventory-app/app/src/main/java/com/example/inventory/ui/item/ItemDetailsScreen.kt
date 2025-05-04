@@ -66,6 +66,7 @@ import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
 import kotlinx.coroutines.launch
 
+// Objeto que representa el destino de navegación de la pantalla de detalles
 object ItemDetailsDestination : NavigationDestination {
     override val route = "item_details"
     override val titleRes = R.string.item_detail_title
@@ -75,7 +76,7 @@ object ItemDetailsDestination : NavigationDestination {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemDetailsScreen(
+fun ItemDetailsScreen(// Función principal que define la pantalla de detalles de un ítem
     navigateToEditItem: (Int) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
@@ -85,13 +86,13 @@ fun ItemDetailsScreen(
     val coroutineScope = rememberCoroutineScope()
     Scaffold(
         topBar = {
-            InventoryTopAppBar(
+            InventoryTopAppBar( // Barra superior personalizada con botón de regreso
                 title = stringResource(ItemDetailsDestination.titleRes),
                 canNavigateBack = true,
                 navigateUp = navigateBack
             )
         },
-        floatingActionButton = {
+        floatingActionButton = {// Botón flotante para editar el ítem
             FloatingActionButton(
                 onClick = { navigateToEditItem(uiState.value.itemDetails.id) },
                 shape = MaterialTheme.shapes.medium,
@@ -109,7 +110,7 @@ fun ItemDetailsScreen(
         },
         modifier = modifier,
     ) { innerPadding ->
-        ItemDetailsBody(
+        ItemDetailsBody( // Cuerpo principal de la pantall
             itemDetailsUiState = uiState.value,
             onSellItem = { viewModel.reduceQuantityByOne() },
             onDelete = {
@@ -132,7 +133,7 @@ fun ItemDetailsScreen(
         )
     }
 }
-
+// Cuerpo de la pantalla con botones y detalles del ítem
 @Composable
 private fun ItemDetailsBody(
     itemDetailsUiState: ItemDetailsUiState,
@@ -176,7 +177,7 @@ private fun ItemDetailsBody(
     }
 }
 
-
+// Función que muestra los detalles del ítem en una tarjeta
 @Composable
 fun ItemDetails(
     item: Item, modifier: Modifier = Modifier
@@ -227,7 +228,7 @@ fun ItemDetails(
 
     }
 }
-
+// Muestra una fila con la etiqueta y el valor correspondiente (nombre, cantidad o precio)
 @Composable
 private fun ItemDetailsRow(
     @StringRes labelResID: Int, itemDetail: String, modifier: Modifier = Modifier
@@ -238,7 +239,7 @@ private fun ItemDetailsRow(
         Text(text = itemDetail, fontWeight = FontWeight.Bold)
     }
 }
-
+// Cuadro de diálogo que confirma si el usuario realmente quiere eliminar el ítem
 @Composable
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
@@ -258,7 +259,7 @@ private fun DeleteConfirmationDialog(
             }
         })
 }
-
+// Vista previa de la pantalla para propósitos de diseño en tiempo de desarrollo
 @Preview(showBackground = true)
 @Composable
 fun ItemDetailsScreenPreview() {
