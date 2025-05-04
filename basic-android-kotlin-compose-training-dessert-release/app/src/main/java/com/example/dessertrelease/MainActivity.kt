@@ -21,12 +21,12 @@ import androidx.activity.compose.setContent
 import com.example.dessertrelease.ui.DessertReleaseApp
 import com.example.dessertrelease.ui.theme.DessertReleaseTheme
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            DessertReleaseTheme {
-                DessertReleaseApp()
+class MainActivity : ComponentActivity() { // Define la actividad principal.
+    override fun onCreate(savedInstanceState: Bundle?) { // Sobrescribe el metodo onCreate para inicializar la actividad.
+        super.onCreate(savedInstanceState) // Llama al metodo de la clase base.
+        setContent { // Establece el contenido usando Jetpack Compose.
+            DessertReleaseTheme { // Aplica el tema de la aplicación.
+                DessertReleaseApp() // Llama a la función que lanza la interfaz de la aplicación.
             }
         }
     }

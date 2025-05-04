@@ -53,40 +53,37 @@ import com.example.dessertrelease.R
 import com.example.dessertrelease.data.local.LocalDessertReleaseData
 import com.example.dessertrelease.ui.theme.DessertReleaseTheme
 
-/*
- * Screen level composable
- */
 @Composable
-fun DessertReleaseApp(
+fun DessertReleaseApp( // Composable principal que lanza la pantalla de la aplicación.
     dessertReleaseViewModel: DessertReleaseViewModel = viewModel(
-        factory = DessertReleaseViewModel.Factory
+        factory = DessertReleaseViewModel.Factory // Crea el ViewModel si no existe.
     )
 ) {
-    DessertReleaseScreen(
-        uiState = dessertReleaseViewModel.uiState.collectAsState().value,
-        selectLayout = dessertReleaseViewModel::selectLayout
+    DessertReleaseScreen( // Llama a la función que muestra la pantalla de postres.
+        uiState = dessertReleaseViewModel.uiState.collectAsState().value, // Observa el estado de la UI.
+        selectLayout = dessertReleaseViewModel::selectLayout // Proporciona la función para cambiar el layout.
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class) // Permite el uso de características experimentales.
 @Composable
-private fun DessertReleaseScreen(
-    uiState: DessertReleaseUiState,
-    selectLayout: (Boolean) -> Unit
+private fun DessertReleaseScreen( // Composable que maneja la UI de la pantalla de postres.
+    uiState: DessertReleaseUiState, // Estado de la UI.
+    selectLayout: (Boolean) -> Unit // Función que cambia el tipo de layout.
 ) {
-    val isLinearLayout = uiState.isLinearLayout
-    Scaffold(
-        topBar = {
+    val isLinearLayout = uiState.isLinearLayout // Determina si se usa un layout lineal o de cuadrícula.
+    Scaffold( // Componente que organiza la estructura básica de la pantalla.
+        topBar = { // Define la barra superior.
             TopAppBar(
-                title = { Text(stringResource(R.string.top_bar_name)) },
-                actions = {
+                title = { Text(stringResource(R.string.top_bar_name)) }, // Muestra el título de la barra.
+                actions = { // Acción de la barra para cambiar el layout.
                     IconButton(
                         onClick = {
-                            selectLayout(!isLinearLayout)
+                            selectLayout(!isLinearLayout) // Cambia el layout al hacer clic.
                         }
                     ) {
                         Icon(
-                            painter = painterResource(uiState.toggleIcon),
+                            painter = painterResource(uiState.toggleIcon), // Muestra el ícono para cambiar el layout.
                             contentDescription = stringResource(uiState.toggleContentDescription),
                             tint = MaterialTheme.colorScheme.onBackground
                         )
@@ -97,19 +94,19 @@ private fun DessertReleaseScreen(
                 )
             )
         }
-    ) { innerPadding ->
+    ) { innerPadding -> // Define el padding interno del contenido.
         val modifier = Modifier
             .padding(
-                top = dimensionResource(R.dimen.padding_medium),
+                top = dimensionResource(R.dimen.padding_medium), // Aplica el padding.
                 start = dimensionResource(R.dimen.padding_medium),
                 end = dimensionResource(R.dimen.padding_medium),
             )
-        if (isLinearLayout) {
+        if (isLinearLayout) { // Si el layout es lineal, usa un LazyColumn.
             DessertReleaseLinearLayout(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(), // Aplica el modificador al layout.
                 contentPadding = innerPadding
             )
-        } else {
+        } else { // Si no es lineal, usa un LazyVerticalGrid.
             DessertReleaseGridLayout(
                 modifier = modifier,
                 contentPadding = innerPadding,
@@ -119,31 +116,31 @@ private fun DessertReleaseScreen(
 }
 
 @Composable
-fun DessertReleaseLinearLayout(
+fun DessertReleaseLinearLayout( // Composable que muestra los postres en un layout lineal.
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyColumn(
+    LazyColumn( // Usamos LazyColumn para una lista perezosa.
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)), // Espaciado entre los items.
     ) {
         items(
-            items = LocalDessertReleaseData.dessertReleases,
+            items = LocalDessertReleaseData.dessertReleases, // Datos de los postres.
             key = { dessert -> dessert }
-        ) { dessert ->
+        ) { dessert -> // Muestra cada postre como un Card.
             Card(
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.primary // Establece el color del fondo.
                 ),
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium // Define la forma de la tarjeta.
             ) {
                 Text(
-                    text = dessert,
+                    text = dessert, // Muestra el nombre del postre.
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth() // La tarjeta ocupa todo el ancho.
                         .padding(dimensionResource(R.dimen.padding_medium)),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center // Centra el texto dentro de la tarjeta.
                 )
             }
         }
@@ -151,67 +148,67 @@ fun DessertReleaseLinearLayout(
 }
 
 @Composable
-fun DessertReleaseGridLayout(
+fun DessertReleaseGridLayout( // Composable que muestra los postres en un layout de cuadrícula.
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
-    LazyVerticalGrid(
+    LazyVerticalGrid( // Usamos LazyVerticalGrid para una cuadrícula.
         modifier = modifier,
-        columns = GridCells.Fixed(3),
+        columns = GridCells.Fixed(3), // Define 3 columnas fijas.
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)), // Espaciado entre filas.
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)) // Espaciado entre columnas.
     ) {
         items(
             items = LocalDessertReleaseData.dessertReleases,
             key = { dessert -> dessert }
-        ) { dessert ->
+        ) { dessert -> // Muestra cada postre en un Card dentro de la cuadrícula.
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
-                modifier = Modifier.height(110.dp),
+                modifier = Modifier.height(110.dp), // Establece la altura de la tarjeta.
                 shape = MaterialTheme.shapes.medium
             ) {
                 Text(
-                    text = dessert,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                    text = dessert, // Muestra el nombre del postre.
+                    maxLines = 2, // Limita el texto a dos líneas.
+                    overflow = TextOverflow.Ellipsis, // Muestra el texto truncado si es largo.
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .wrapContentHeight(Alignment.CenterVertically)
+                        .fillMaxHeight() // La tarjeta ocupa toda la altura disponible.
+                        .wrapContentHeight(Alignment.CenterVertically) // Centra el texto verticalmente.
                         .padding(dimensionResource(R.dimen.padding_small))
-                        .align(Alignment.CenterHorizontally),
-                    textAlign = TextAlign.Center
+                        .align(Alignment.CenterHorizontally), // Centra la tarjeta horizontalmente.
+                    textAlign = TextAlign.Center // Centra el texto dentro de la tarjeta.
                 )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true) // Previsualización del layout lineal.
 @Composable
 fun DessertReleaseLinearLayoutPreview() {
     DessertReleaseTheme {
-        DessertReleaseLinearLayout()
+        DessertReleaseLinearLayout() // Muestra la vista lineal.
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true) // Previsualización del layout en cuadrícula.
 @Composable
 fun DessertReleaseGridLayoutPreview() {
     DessertReleaseTheme {
-        DessertReleaseGridLayout()
+        DessertReleaseGridLayout() // Muestra la vista en cuadrícula.
     }
 }
 
-@Preview
+@Preview // Previsualización de la pantalla completa.
 @Composable
 fun DessertReleaseAppPreview() {
     DessertReleaseTheme {
         DessertReleaseScreen(
             uiState = DessertReleaseUiState(),
             selectLayout = {}
-        )
+        ) // Muestra la pantalla completa con estado inicial.
     }
 }

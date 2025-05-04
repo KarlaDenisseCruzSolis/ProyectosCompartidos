@@ -35,53 +35,50 @@ import kotlinx.coroutines.runBlocking
 /*
  * View model of Dessert Release components
  */
-class DessertReleaseViewModel(
-    private val userPreferencesRepository: UserPreferencesRepository
+class DessertReleaseViewModel( // Define el ViewModel para manejar la UI de los postres.
+    private val userPreferencesRepository: UserPreferencesRepository // Repositorio para manejar las preferencias del usuario.
 ) : ViewModel() {
-    // UI states access for various [DessertReleaseUiState]
+    // Estado de la UI que observa las preferencias de layout (lineal o cuadrícula).
     val uiState: StateFlow<DessertReleaseUiState> =
-        userPreferencesRepository.isLinearLayout.map { isLinearLayout ->
-            DessertReleaseUiState(isLinearLayout)
+        userPreferencesRepository.isLinearLayout.map { isLinearLayout -> // Mapea las preferencias de layout.
+            DessertReleaseUiState(isLinearLayout) // Crea el estado UI con la preferencia de layout.
         }.stateIn(
-            scope = viewModelScope,
-            // Flow is set to emits value for when app is on the foreground
-            // 5 seconds stop delay is added to ensure it flows continuously
-            // for cases such as configuration change
-            started = SharingStarted.WhileSubscribed(5_000),
+            scope = viewModelScope, // Usa el scope del ViewModel.
+            started = SharingStarted.WhileSubscribed(5_000), // Mantiene el flujo activo mientras la app esté en primer plano.
             initialValue = runBlocking {
                 DessertReleaseUiState(
-                    isLinearLayout = userPreferencesRepository.isLinearLayout.first()
+                    isLinearLayout = userPreferencesRepository.isLinearLayout.first() // Obtiene el valor inicial del flujo.
                 )
             }
         )
 
     /*
-     * [selectLayout] change the layout and icons accordingly and
-     * save the selection in DataStore through [userPreferencesRepository]
+     * Cambia el layout (lineal o cuadrícula) y guarda la selección en el repositorio de preferencias.
      */
     fun selectLayout(isLinearLayout: Boolean) {
         viewModelScope.launch {
-            userPreferencesRepository.saveLayoutPreference(isLinearLayout)
+            userPreferencesRepository.saveLayoutPreference(isLinearLayout) // Guarda la preferencia del usuario.
         }
     }
 
     companion object {
+        // Crea el Factory para inicializar el ViewModel.
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as DessertReleaseApplication)
-                DessertReleaseViewModel(application.userPreferencesRepository)
+                DessertReleaseViewModel(application.userPreferencesRepository) // Inicializa el ViewModel con el repositorio.
             }
         }
     }
 }
 
 /*
- * Data class containing various UI States for Dessert Release screens
+ * Data class que contiene varios estados UI para las pantallas de Dessert Release.
  */
 data class DessertReleaseUiState(
-    val isLinearLayout: Boolean = true,
+    val isLinearLayout: Boolean = true, // Determina si el layout es lineal.
     val toggleContentDescription: Int =
-        if (isLinearLayout) R.string.grid_layout_toggle else R.string.linear_layout_toggle,
+        if (isLinearLayout) R.string.grid_layout_toggle else R.string.linear_layout_toggle, // Define el texto para el botón de cambio de layout.
     val toggleIcon: Int =
-        if (isLinearLayout) R.drawable.ic_grid_layout else R.drawable.ic_linear_layout
+        if (isLinearLayout) R.drawable.ic_grid_layout else R.drawable.ic_linear_layout // Define el ícono para el cambio de layout.
 )
