@@ -34,32 +34,34 @@ import com.example.inventory.ui.navigation.InventoryNavHost
 
 /**
  * Top level composable that represents screens for the application.
+ * (Función composable de nivel superior que representa las pantallas de la aplicación)
  */
 @Composable
 fun InventoryApp(navController: NavHostController = rememberNavController()) {
-    InventoryNavHost(navController = navController)
+    InventoryNavHost(navController = navController) // Llama a la función que maneja la navegación dentro de la app
 }
 
 /**
  * App bar to display title and conditionally display the back navigation.
+ * (Barra de aplicación para mostrar el título y la navegación hacia atrás opcionalmente)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InventoryTopAppBar(
     title: String,
-    canNavigateBack: Boolean,
-    modifier: Modifier = Modifier,
-    scrollBehavior: TopAppBarScrollBehavior? = null,
-    navigateUp: () -> Unit = {}
+    canNavigateBack: Boolean,// Flag para determinar si se puede navegar hacia atrás
+    modifier: Modifier = Modifier, // Modificador opcional para personalizar la barra
+    scrollBehavior: TopAppBarScrollBehavior? = null, // Comportamiento de desplazamiento de la barra de app
+    navigateUp: () -> Unit = {} // Función para manejar la acción de navegar hacia atrás
 ) {
     CenterAlignedTopAppBar(
         title = { Text(title) },
         modifier = modifier,
         scrollBehavior = scrollBehavior,
-        navigationIcon = {
+        navigationIcon = {// Define un ícono de navegación
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
-                    Icon(
+                    Icon(// Define el ícono de la flecha hacia atrás
                         imageVector = Filled.ArrowBack,
                         contentDescription = stringResource(string.back_button)
                     )

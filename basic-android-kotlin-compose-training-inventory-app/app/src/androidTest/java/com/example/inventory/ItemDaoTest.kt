@@ -35,9 +35,10 @@ import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class ItemDaoTest {
-
+    // Definición de las variables para ItemDao y la base de datos
     private lateinit var itemDao: ItemDao
     private lateinit var inventoryDatabase: InventoryDatabase
+    // Creación de dos objetos Item para usar en las pruebas
     private val item1 = Item(1, "Apples", 10.0, 20)
     private val item2 = Item(2, "Bananas", 15.0, 97)
 
@@ -59,6 +60,7 @@ class ItemDaoTest {
         inventoryDatabase.close()
     }
 
+    // Test que verifica que se puede insertar un solo elemento en la base de datos
     @Test
     @Throws(Exception::class)
     fun daoInsert_insertsItemIntoDB() = runBlocking {
@@ -67,16 +69,17 @@ class ItemDaoTest {
         assertEquals(allItems[0], item1)
     }
 
+    // Test que verifica que se pueden obtener todos los ítems desde la base de datos
     @Test
     @Throws(Exception::class)
     fun daoGetAllItems_returnsAllItemsFromDB() = runBlocking {
         addTwoItemsToDb()
         val allItems = itemDao.getAllItems().first()
-        assertEquals(allItems[0], item1)
-        assertEquals(allItems[1], item2)
+        assertEquals(allItems[0], item1) // Se verifica que el primer ítem es el esperado
+        assertEquals(allItems[1], item2) // Se verifica que el segundo ítem es el esperado
     }
 
-
+    // Test que verifica que se puede obtener un ítem específico desde la base de datos
     @Test
     @Throws(Exception::class)
     fun daoGetItem_returnsItemFromDB() = runBlocking {
@@ -85,6 +88,7 @@ class ItemDaoTest {
         assertEquals(item.first(), item1)
     }
 
+    // Test que verifica que se pueden eliminar ítems de la base de datos
     @Test
     @Throws(Exception::class)
     fun daoDeleteItems_deletesAllItemsFromDB() = runBlocking {
@@ -95,6 +99,7 @@ class ItemDaoTest {
         assertTrue(allItems.isEmpty())
     }
 
+    // Test que verifica que se pueden actualizar ítems en la base de datos
     @Test
     @Throws(Exception::class)
     fun daoUpdateItems_updatesItemsInDB() = runBlocking {
@@ -106,11 +111,11 @@ class ItemDaoTest {
         assertEquals(allItems[0], Item(1, "Apples", 15.0, 25))
         assertEquals(allItems[1], Item(2, "Bananas", 5.0, 50))
     }
-
+    // Función auxiliar para agregar un ítem a la base de datos
     private suspend fun addOneItemToDb() {
         itemDao.insert(item1)
     }
-
+    // Función auxiliar para agregar dos ítems a la base de datos
     private suspend fun addTwoItemsToDb() {
         itemDao.insert(item1)
         itemDao.insert(item2)

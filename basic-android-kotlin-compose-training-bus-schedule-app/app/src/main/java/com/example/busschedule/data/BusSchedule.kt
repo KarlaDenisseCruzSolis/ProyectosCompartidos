@@ -21,19 +21,25 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * Represents a single table in the database. Each row is a separate instance of
- * the BusSchedule class. Each property corresponds to a column.
- * Additionally, an ID is needed as a unique identifier for
- * each row in the database.
+ * Representa una sola tabla en la base de datos. Cada fila es una instancia separada
+ * de la clase BusSchedule. Cada propiedad corresponde a una columna.
+ * Además, es necesario un ID como identificador único para cada fila en la base de datos.
  */
-@Entity(tableName = "Schedule")
+@Entity(tableName = "Schedule") // Define la tabla en la base de datos con el nombre "Schedule".
 data class BusSchedule(
+    // La propiedad 'id' se marca como la clave primaria para identificar de forma única cada fila.
     @PrimaryKey
-    val id: Int,
+    val id: Int, // Clave primaria que identificará de manera única cada registro.
+
+    // La propiedad 'stopName' representa el nombre de la parada.
+    // Se usa la anotación @NonNull para asegurarse de que no sea nulo.
     @NonNull
-    @ColumnInfo(name = "stop_name")
-    val stopName: String,
+    @ColumnInfo(name = "stop_name") // El nombre de la columna en la base de datos será "stop_name".
+    val stopName: String, // Nombre de la parada de autobús.
+
+    // La propiedad 'arrivalTimeInMillis' representa el tiempo de llegada en milisegundos.
+    // También se marca como @NonNull para que no sea nulo.
     @NonNull
-    @ColumnInfo(name = "arrival_time")
-    val arrivalTimeInMillis: Int
+    @ColumnInfo(name = "arrival_time") // El nombre de la columna en la base de datos será "arrival_time".
+    val arrivalTimeInMillis: Int // Hora de llegada en milisegundos desde la medianoche.
 )
