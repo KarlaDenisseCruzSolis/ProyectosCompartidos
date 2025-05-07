@@ -6,16 +6,16 @@ import com.lixoten.flightsearch.model.Favorite
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FlightDao {
-    @Query(
+interface FlightDao {// Anotación que indica que esta interfaz es un DAO de Room
+    @Query(// Consulta que devuelve todos los registros de la tabla "favorite", ordenados por ID ascendente
         """
         Select * from favorite
         ORDER BY id ASC
         """
     )
     //fun getAllAirports(): Flow<List<Airport>>
-    suspend fun getAllFavorites(): List<Favorite>
-    @Query(
+    suspend fun getAllFavorites(): List<Favorite>// Metodo suspendido que devuelve la lista de favoritos (modo sincrónico para uso en corrutinas)
+    @Query(// Misma consulta anterior, pero expuesta como un Flow para obtener actualizaciones en tiempo real
         """
         Select * from favorite
         ORDER BY id ASC
@@ -23,7 +23,7 @@ interface FlightDao {
     )
     fun getAllFavoritesFlow(): Flow<List<Favorite>>
 
-    @Query(
+    @Query(// Consulta que busca un único favorito que coincida con un código de salida y uno de destino
         """
         SELECT * FROM favorite
         WHERE departure_code = :departureCode
@@ -35,9 +35,11 @@ interface FlightDao {
 
 
     //@Insert(onConflict = OnConflictStrategy.IGNORE)
+    // Inserta un vuelo favorito en la base de datos
+    // Reemplaza el existente si ya hay un registro con el mismo ID (REPLACE)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavoriteFlight(flight: Favorite)
-    @Delete
+    @Delete // Elimina un vuelo favorito de la base de datos
     suspend fun deleteFavoriteFlight(flight: Favorite)
 
 
@@ -45,14 +47,14 @@ interface FlightDao {
 //    Select * from airport
 //    WHERE name LIKE :name
 //    ORDER BY name ASC
-    @Query(
+    @Query(// Consulta que obtiene todos los aeropuertos como un Flow (actualización en tiempo real)
         """
         Select * from airport 
         ORDER BY id ASC 
         """
     )
     fun getAllAirportsFlow(): Flow<List<Airport>>
-    @Query(
+    @Query(// Consulta que obtiene todos los aeropuertos como lista suspendida
         """
         Select * from airport 
         ORDER BY id ASC 
@@ -63,7 +65,8 @@ interface FlightDao {
 
 
 
-    @Query(
+    @Query(// Consulta que filtra aeropuertos por código IATA o por coincidencia parcial en el nombre
+           // Devuelve un Flow con los resultados en tiempo real
         """
     Select * from airport
     WHERE iata_code = :query OR name LIKE '%' || :query || '%'        

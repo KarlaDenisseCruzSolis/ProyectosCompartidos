@@ -12,47 +12,51 @@ import com.lixoten.flightsearch.model.Airport
 import com.lixoten.flightsearch.model.Favorite
 
 @Composable
-fun FlightResults(
-    modifier: Modifier = Modifier,
-    departureAirport: Airport,
-    destinationList: List<Airport>,
-    favoriteList: List<Favorite>,
-    onFavoriteClick: (String, String) -> Unit
+fun FlightResults( // Función composable que muestra los resultados de vuelos desde un aeropuerto de salida
+    modifier: Modifier = Modifier,// Modificador opcional para personalizar la UI desde fuera
+    departureAirport: Airport,// Aeropuerto de salida seleccionado
+    destinationList: List<Airport>,// Lista de aeropuertos de destino
+    favoriteList: List<Favorite>,// Lista de rutas favoritas del usuario
+    onFavoriteClick: (String, String) -> Unit // Función de callback al marcar/desmarcar favorito
 ) {
     Column {
         //Text(text = uiState.value.play)
+        // Contenedor de tipo columna para apilar elementos verticalmente
+
+        // LazyColumn para mostrar la lista de aeropuertos de destino
         LazyColumn(
             modifier = modifier
-                .padding(8.dp)
-                .fillMaxWidth()
+                .padding(8.dp)// Agrega un espacio de 8dp alrededor de la lista
+                .fillMaxWidth() // Hace que la lista ocupe todo el ancho disponible
         ) {
-            items(destinationList, key = { it.id }) { item ->
-                val isFavorite = favoriteList.find { f ->
+            items(destinationList, key = { it.id }) { item ->// Itera sobre cada destino en la lista
+                val isFavorite = favoriteList.find { f ->// Busca si la combinación salida-destino ya está en favoritos
                     f.departureCode == departureAirport.code &&
                             f.destinationCode == item.code }
 
-                FlightRow(
-                    isFavorite = isFavorite != null,
-                    departureAirportCode = departureAirport.code,
-                    departureAirportName = departureAirport.name,
-                    destinationAirportCode = item.code,
-                    destinationAirportName = item.name,
-                    onFavoriteClick = onFavoriteClick
+                FlightRow(// Muestra una fila de vuelo con los datos actuales
+                    isFavorite = isFavorite != null,// Marca como favorito si ya existe en la lista
+                    departureAirportCode = departureAirport.code,// Código del aeropuerto de salida
+                    departureAirportName = departureAirport.name,// Nombre del aeropuerto de salida
+                    destinationAirportCode = item.code,// Código del aeropuerto de destino
+                    destinationAirportName = item.name,// Nombre del aeropuerto de destino
+                    onFavoriteClick = onFavoriteClick// Callback al hacer clic en el ícono de favorito
                 )
             }
         }
     }
 }
 
+// Función composable de vista previa que muestra cómo se ve FlightResults con datos simulados
 @Preview
 @Composable
 fun FlightResultsPreview() {
-    val mockData = MockData.airports
+    val mockData = MockData.airports// Carga aeropuertos de prueba
 
     FlightResults(
-        departureAirport = mockData[0],
-        destinationList = mockData,
-        favoriteList = emptyList(),
-        onFavoriteClick = { _: String, _: String -> }
+        departureAirport = mockData[0],// Usa el primer aeropuerto como punto de partida
+        destinationList = mockData,// Usa toda la lista como destinos
+        favoriteList = emptyList(),// Sin favoritos en la vista previa
+        onFavoriteClick = { _: String, _: String -> }// No se hace nada al hacer clic en favorito
     )
 }
