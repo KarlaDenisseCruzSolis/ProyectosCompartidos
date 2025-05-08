@@ -1,0 +1,75 @@
+- - - 1. Define una función y llámala - - -
+
+fun main() {
+    birthdayGreeting()
+}
+
+fun birthdayGreeting() {
+    println("Happy Birthday, Rover!")
+    println("You are now 5 years old!")
+}
+
+/*
+- - - 2. Muestra un valor de una función - - -
+
+fun main() {
+    println(birthdayGreeting())
+}
+
+fun birthdayGreeting(): String {
+    val nameGreeting = "Happy Birthday, Rover!"
+    val ageGreeting = "You are now 5 years old!"
+    return "$nameGreeting\n$ageGreeting"
+}
+
+- - - 3. Agrega un parámetro a la función birthdayGreeting() - - -
+
+fun main() {
+    println(birthdayGreeting("Rover"))
+	println(birthdayGreeting("Rex"))
+}
+
+fun birthdayGreeting(name: String): String {
+    val nameGreeting = "Happy Birthday, Rover!"
+    val ageGreeting = "You are now 5 years old!"
+    return "$nameGreeting\n$ageGreeting"
+}
+
+- - - 4. Funciones con varios parámetros - - -
+
+fun main() {
+    println(birthdayGreeting("Rover", 5))
+    println(birthdayGreeting("Rex", 2))
+}
+
+fun birthdayGreeting(name: String, age: Int): String {
+    val nameGreeting = "Happy Birthday, $name!"
+    val ageGreeting = "You are now $age years old!"
+    return "$nameGreeting\n$ageGreeting"
+}
+
+- - - 5. Argumentos con nombre - - -
+
+fun main() {
+    println(birthdayGreeting(name = "Rover", age = 5))
+    println(birthdayGreeting(age = 2, name = "Rex"))
+}
+
+fun birthdayGreeting(name: String, age: Int): String {
+    val nameGreeting = "Happy Birthday, $name!"
+    val ageGreeting = "You are now $age years old!"
+    return "$nameGreeting\n$ageGreeting"
+}
+
+- - - 6. Argumentos predeterminados - - -
+
+fun main() {
+    println(birthdayGreeting(age = 5))
+	println(birthdayGreeting("Rex", 2))
+}
+
+fun birthdayGreeting(name: String = "Rover", age: Int): String {
+    return "Happy Birthday, $name! You are now $age years old!"
+}
+
+*/

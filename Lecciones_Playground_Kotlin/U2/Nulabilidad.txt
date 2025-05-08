@@ -1,0 +1,92 @@
+/*
+ * Unidad 2
+ */
+fun main() {
+    val favoriteActor: String? = null
+    println(favoriteActor)
+}
+
+/*
+//----------------Variables anulables y no anulables--------------------
+fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+    println(favoriteActor)
+
+    favoriteActor = null
+    println(favoriteActor)
+}
+
+//----------------Int anulable--------------------
+fun main() {
+    var number: Int? = 10
+    println(number)
+
+    number = null
+    println(number)
+}
+
+//-----Procesa variables anulables-----------------
+fun main() {
+    var favoriteActor: String = "Sandra Oh"
+    println(favoriteActor.length)
+}
+
+//-----Operador de llamada segura ?.---------------
+fun main() {
+    var favoriteActor: String? = null
+    println(favoriteActor?.length)
+}
+
+//----Operador de aserción no nulo de !!-----------
+fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+    println(favoriteActor!!.length)
+}
+
+//--------Condicionales if/else--------------------
+fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    if (favoriteActor != null) {
+        println("The number of characters in your favorite actor's name is ${favoriteActor.length}.")
+    }
+}
+
+//----------Expresiones if/else-------------------
+fun main() {
+    var favoriteActor: String? = null
+
+    if (favoriteActor != null) {
+        println("The number of characters in your favorite actor's name is ${favoriteActor.length}.")
+    } else {
+        println("You didn't input a name.")
+    }
+}
+
+fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    val lengthOfName = if (favoriteActor != null) {
+        favoriteActor.length
+    } else {
+        0
+    }
+
+    println("The number of characters in your favorite actor's name is $lengthOfName.")
+}
+
+
+//-----------Operador Elvis ?:------------------------
+fun main() {
+    var favoriteActor: String? = "Sandra Oh"
+
+    val lengthOfName = favoriteActor?.length ?: 0
+
+    println("The number of characters in your favorite actor's name is $lengthOfName.")
+}
+ */
+
+
+
+
+

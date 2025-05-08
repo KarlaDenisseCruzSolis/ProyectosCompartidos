@@ -1,0 +1,257 @@
+/*
+ * Unidad 3
+ */
+fun main() {
+    // Creamos un array de planetas rocosos
+    val rockPlanets = arrayOf<String>("Mercury", "Venus", "Earth", "Mars")
+    
+    // Creamos un array de planetas gaseosos (sin especificar tipo explícito)
+    val gasPlanets = arrayOf("Jupiter", "Saturn", "Uranus", "Neptune")
+    
+    // Unimos los dos arrays en uno nuevo llamado solarSystem
+    val solarSystem = rockPlanets + gasPlanets
+}
+
+/*
+
+//----------Acceder a un elemento en un array---------------------
+fun main() {
+    // Creamos arrays como listas mutables
+    val solarSystem = mutableListOf("Mercury", "Venus", "Earth", "Mars", 
+                                    "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Imprimimos todos los elementos
+    println(solarSystem[0])
+    println(solarSystem[1])
+    println(solarSystem[2])
+    println(solarSystem[3])
+    println(solarSystem[4])
+    println(solarSystem[5])
+    println(solarSystem[6])
+    println(solarSystem[7])
+
+    // Cambiamos el nombre de Marte a "Little Earth"
+    solarSystem[3] = "Little Earth"
+    println(solarSystem[3]) // Imprime "Little Earth"
+
+    // Tratamos de agregar Plutón al índice 8 (esto ya es posible con mutableList)
+    solarSystem.add("Pluto")
+    println(solarSystem[8]) // Imprime "Pluto"
+}
+
+
+//-------------Función listOf()-----------------------
+fun main() {
+    // Creamos una lista inmutable con los 8 planetas
+    val solarSystem = listOf("Mercury", "Venus", "Earth", "Mars", 
+                             "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Imprimimos el tamaño de la lista
+    println(solarSystem.size)
+}
+
+
+//-----Acceder a los elementos desde una lista---------
+fun main() {
+    // Creamos una lista inmutable con los 8 planetas
+    val solarSystem = listOf("Mercury", "Venus", "Earth", "Mars", 
+                             "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Accedemos al elemento en el índice 2 usando subíndice
+    println(solarSystem[2]) // Debería imprimir: Earth
+
+    // Accedemos al elemento en el índice 3 usando el método get()
+    println(solarSystem.get(3)) // Debería imprimir: Mars
+}
+
+
+
+
+fun main() {
+    // Creamos una lista inmutable con los 8 planetas
+    val solarSystem = listOf("Mercury", "Venus", "Earth", "Mars", 
+                             "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Buscar el índice de "Earth"
+    println(solarSystem.indexOf("Earth"))  // Debería imprimir: 2
+
+    // Buscar el índice de "Pluto"
+    println(solarSystem.indexOf("Pluto"))  // Debería imprimir: -1
+}
+
+
+
+//--------Iterar en elementos de lista con un bucle for-------------
+fun main() {
+    // Lista de planetas del sistema solar
+    val solarSystem = listOf("Mercury", "Venus", "Earth", "Mars", 
+                             "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Recorremos la lista con un bucle for y mostramos cada planeta
+    for (planet in solarSystem) {
+        println(planet)
+    }
+}
+
+
+fun main() {
+    // Lista mutable de planetas
+    val solarSystem = mutableListOf(
+        "Mercury", "Venus", "Earth", "Mars",
+        "Jupiter", "Saturn", "Uranus", "Neptune"
+    )
+
+    // Agregamos a Plutón al final de la lista
+    solarSystem.add("Pluto")
+
+    // Insertamos a Theia en la posición 3 (antes de Marte)
+    solarSystem.add(3, "Theia")
+
+    // Imprimimos la lista para ver los cambios
+    for (planet in solarSystem) {
+        println(planet)
+    }
+}
+
+
+//-------Agregar elementos a una lista-------------------
+fun main() {
+    // Lista mutable con planetas
+    val solarSystem = mutableListOf(
+        "Mercury", "Venus", "Earth", "Theia", "Mars",
+        "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"
+    )
+
+    // Actualizamos el valor en el índice 3
+    solarSystem[3] = "Future Moon"
+
+    // Imprimimos los elementos en el índice 3 y 9
+    println(solarSystem[3])
+    println(solarSystem[9])
+}
+
+
+//-----------Quitar elementos de una lista-----------------
+fun main() {
+    // Lista mutable con planetas incluyendo Theia y Pluto
+    val solarSystem = mutableListOf(
+        "Mercury", "Venus", "Earth", "Future Moon", "Mars",
+        "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"
+    )
+
+    // Quitar a "Pluto" por índice
+    solarSystem.removeAt(9)
+
+    // Quitar a "Future Moon" por nombre
+    solarSystem.remove("Future Moon")
+
+    // Verificar si "Pluto" sigue en la lista
+    println(solarSystem.contains("Pluto"))
+
+    // Verificar si "Future Moon" está usando el operador 'in'
+    println("Future Moon" in solarSystem)
+}
+
+
+//-----------------MutableSet---------------------------
+fun main() {
+    // Crear un conjunto mutable de planetas
+    val solarSystem = mutableSetOf("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Imprimir el tamaño inicial del conjunto
+    println(solarSystem.size)  // Debería imprimir 8
+
+    // Agregar "Pluto" al conjunto
+    solarSystem.add("Pluto")
+
+    // Imprimir el tamaño después de agregar "Pluto"
+    println(solarSystem.size)  // Debería imprimir 9
+
+    // Verificar si "Pluto" está en el conjunto
+    println(solarSystem.contains("Pluto"))  // Debería imprimir true
+
+    // Intentar agregar "Pluto" de nuevo
+    solarSystem.add("Pluto")
+
+    // Imprimir el tamaño después del intento de agregar "Pluto" otra vez
+    println(solarSystem.size)  // Debería seguir siendo 9 porque "Pluto" ya estaba en el conjunto
+}
+
+
+fun main() {
+    // Crear un conjunto mutable de planetas
+    val solarSystem = mutableSetOf("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+
+    // Agregar "Pluto" al conjunto
+    solarSystem.add("Pluto")
+
+    // Usar remove() para quitar "Pluto" del conjunto
+    solarSystem.remove("Pluto")
+
+    // Imprimir el tamaño después de quitar "Pluto"
+    println(solarSystem.size)  // Debería imprimir 8
+
+    // Verificar si "Pluto" está en el conjunto
+    println(solarSystem.contains("Pluto"))  // Debería imprimir false
+}
+
+
+//------------------Mapas-----------------------------
+fun main() {
+    // Crear un mapa mutable de planetas y sus lunas
+    val solarSystem = mutableMapOf(
+        "Mercury" to 0,
+        "Venus" to 0,
+        "Earth" to 1,
+        "Mars" to 2,
+        "Jupiter" to 79,
+        "Saturn" to 82,
+        "Uranus" to 27,
+        "Neptune" to 14
+    )
+
+    // Imprimir el tamaño del mapa
+    println(solarSystem.size)  // Debería imprimir 8
+
+    // Agregar "Pluto" al mapa con un valor de 5
+    solarSystem["Pluto"] = 5
+
+    // Imprimir el tamaño del mapa después de agregar "Pluto"
+    println(solarSystem.size)  // Debería imprimir 9
+
+    // Imprimir el valor (número de lunas) de la clave "Pluto"
+    println(solarSystem["Pluto"])  // Debería imprimir 5
+
+    // Usar get() para obtener el valor de "Theia"
+    println(solarSystem.get("Theia"))  // Debería imprimir null porque "Theia" no está en el mapa
+}
+
+
+fun main() {
+    // Crear un mapa mutable de planetas y sus lunas
+    val solarSystem = mutableMapOf(
+        "Mercury" to 0,
+        "Venus" to 0,
+        "Earth" to 1,
+        "Mars" to 2,
+        "Jupiter" to 79,
+        "Saturn" to 82,
+        "Uranus" to 27,
+        "Neptune" to 14
+    )
+
+    // Llamar a remove() para quitar "Pluto"
+    println(solarSystem.remove("Pluto"))  // Debería imprimir null porque "Pluto" no está en el mapa
+
+    // Verificar el tamaño del mapa después de eliminar "Pluto"
+    println(solarSystem.size)  // Debería imprimir 8
+
+    // Actualizar el valor de "Jupiter" a 78
+    solarSystem["Jupiter"] = 78
+
+    // Imprimir el valor actualizado de "Jupiter"
+    println(solarSystem["Jupiter"])  // Debería imprimir 78
+}
+
+
+ */
