@@ -1,0 +1,261 @@
+// Clase genérica para representar cualquier tipo de pregunta
+//Clase reutilizable con genéricos---------------------------------------
+class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: String
+)
+
+fun main() {
+    // Pregunta con respuesta tipo String
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", "medium")
+
+    // Pregunta con respuesta tipo Boolean
+    val question2 = Question<Boolean>("The sky is green. True or false", false, "easy")
+
+    // Pregunta con respuesta tipo Int
+    val question3 = Question<Int>("How many days are there between full moons?", 28, "hard")
+
+    // Imprimir para verificar
+    println("Pregunta 1: ${question1.questionText} Respuesta: ${question1.answer} Dificultad: ${question1.difficulty}")
+    println("Pregunta 2: ${question2.questionText} Respuesta: ${question2.answer} Dificultad: ${question2.difficulty}")
+    println("Pregunta 3: ${question3.questionText} Respuesta: ${question3.answer} Dificultad: ${question3.difficulty}")
+}
+
+
+/*
+
+//Clase enum---------------------------------------
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase genérica para representar preguntas
+class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+fun main() {
+    // Pregunta con respuesta tipo String
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+
+    // Pregunta con respuesta tipo Boolean
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+
+    // Pregunta con respuesta tipo Int
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    // Imprimir para verificar
+    println("Pregunta 1: ${question1.questionText} Respuesta: ${question1.answer} Dificultad: ${question1.difficulty}")
+    println("Pregunta 2: ${question2.questionText} Respuesta: ${question2.answer} Dificultad: ${question2.difficulty}")
+    println("Pregunta 3: ${question3.questionText} Respuesta: ${question3.answer} Dificultad: ${question3.difficulty}")
+}
+
+
+//Clase de datos---------------------------------------
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase de datos genérica para representar preguntas
+data class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+fun main() {
+    // Preguntas con diferentes tipos de respuesta
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    // Imprime usando toString() automáticamente implementado por data class
+    println(question1.toString())
+    println(question2) // También se puede imprimir directamente
+    println(question3)
+}
+
+
+//Objeto Singleton---------------------------------------
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase de datos para representar preguntas genéricas
+data class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+// Clase que representa el cuestionario
+class Quiz {
+    // Preguntas del cuestionario
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    // Objeto complementario para el progreso del estudiante
+    companion object StudentProgress {
+        var total: Int = 10
+        var answered: Int = 3
+    }
+}
+
+// Función principal
+fun main() {
+    println("${Quiz.answered} of ${Quiz.total} answered.")
+}
+
+
+
+//Extender clases con propiedades y métodos nuevos---------------------------------------
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase de datos para representar preguntas genéricas
+data class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+// Clase que representa el cuestionario
+class Quiz {
+    // Preguntas del cuestionario
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    // Objeto complementario para el progreso del estudiante
+    companion object StudentProgress {
+        var total: Int = 10
+        var answered: Int = 3
+    }
+}
+
+// Propiedad de extensión: progreso en texto
+val Quiz.StudentProgress.progressText: String
+    get() = "$answered of $total answered"
+
+// Función de extensión: imprime una barra de progreso
+fun Quiz.StudentProgress.printProgressBar() {
+    repeat(answered) { print("▓") }
+    repeat(total - answered) { print("▒") }
+    println()
+    println(progressText)
+}
+
+// Función principal
+fun main() {
+    Quiz.printProgressBar()
+}
+
+
+
+//Reescribir funciones de extensión con interfaces---------------------------------------
+// Enum para la dificultad de las preguntas
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase de datos para representar preguntas genéricas
+data class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+// INTERFAZ para imprimir progreso
+interface ProgressPrintable {
+    val progressText: String
+    fun printProgressBar()
+}
+
+// Clase Quiz que ahora IMPLEMENTA ProgressPrintable
+class Quiz : ProgressPrintable {
+    // Preguntas del cuestionario
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    // Objeto complementario que lleva el progreso
+    companion object StudentProgress {
+        var total: Int = 10
+        var answered: Int = 3
+    }
+
+    // Implementación de la propiedad progressText (obligatoria por la interfaz)
+    override val progressText: String
+        get() = "${answered} of ${total} answered"
+
+    // Implementación de la función printProgressBar() (también requerida)
+    override fun printProgressBar() {
+        repeat(answered) { print("▓") }
+        repeat(total - answered) { print("▒") }
+        println()
+        println(progressText)
+    }
+}
+
+// Función principal
+fun main() {
+    Quiz().printProgressBar()
+}
+
+
+//Funciones de alcance---------------------------------------
+enum class Difficulty {
+    EASY, MEDIUM, HARD
+}
+
+// Clase genérica para representar una pregunta
+data class Question<T>(
+    val questionText: String,
+    val answer: T,
+    val difficulty: Difficulty
+)
+
+// Clase Quiz con preguntas y función printQuiz usando funciones de alcance
+class Quiz {
+    val question1 = Question<String>("Quoth the raven ___", "nevermore", Difficulty.MEDIUM)
+    val question2 = Question<Boolean>("The sky is green. True or false", false, Difficulty.EASY)
+    val question3 = Question<Int>("How many days are there between full moons?", 28, Difficulty.HARD)
+
+    fun printQuiz() {
+        question1.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+        question2.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+        question3.let {
+            println(it.questionText)
+            println(it.answer)
+            println(it.difficulty)
+        }
+        println()
+    }
+}
+
+// función main usando apply() para evitar declarar la variable quiz
+fun main() {
+    Quiz().apply {
+        printQuiz()
+    }
+}
+
+
+
+
+ */
