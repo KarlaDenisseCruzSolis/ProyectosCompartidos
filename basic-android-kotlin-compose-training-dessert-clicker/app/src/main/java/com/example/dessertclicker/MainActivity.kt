@@ -73,26 +73,29 @@ import com.example.dessertclicker.model.Dessert
 import com.example.dessertclicker.ui.theme.DessertClickerTheme
 
 // Tag for logging
+// Tag para los logs de depuración
 private const val TAG = "MainActivity"
 
+// Clase principal que hereda de ComponentActivity para usar Compose
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate Called")
+        enableEdgeToEdge() // Activa el diseño de pantalla completa Edge-to-Edge
+        super.onCreate(savedInstanceState)  // Llama a onCreate padre
+        Log.d(TAG, "onCreate Called")  // Log de depuración
         setContent {
-            DessertClickerTheme {
-                // A surface container using the 'background' color from the theme
+            DessertClickerTheme {  // Aplica el tema de la app
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .statusBarsPadding(),
+                        .fillMaxSize()  // Ocupa toda la pantalla
+                        .statusBarsPadding(), // Padding para no tapar la barra de estado
                 ) {
-                    DessertClickerApp(desserts = Datasource.dessertList)
+                    DessertClickerApp(desserts = Datasource.dessertList) // Lanza la app con datos de postres
                 }
             }
         }
     }
+
+    // Métodos del ciclo de vida con logs para depuración
 
     override fun onStart() {
         super.onStart()
@@ -126,46 +129,49 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * Determine which dessert to show.
+ * Función para determinar qué postre mostrar según la cantidad vendida.
+ * @param desserts Lista ordenada de postres disponibles.
+ * @param dessertsSold Cantidad de postres vendidos hasta ahora.
+ * @return El postre correspondiente para mostrar.
  */
 fun determineDessertToShow(
     desserts: List<Dessert>,
     dessertsSold: Int
 ): Dessert {
-    var dessertToShow = desserts.first()
+    var dessertToShow = desserts.first() // Inicialmente selecciona el primer postre
     for (dessert in desserts) {
         if (dessertsSold >= dessert.startProductionAmount) {
-            dessertToShow = dessert
+            dessertToShow = dessert  // Actualiza el postre a mostrar si cumple la cantidad mínima
         } else {
-            // The list of desserts is sorted by startProductionAmount. As you sell more desserts,
-            // you'll start producing more expensive desserts as determined by startProductionAmount
-            // We know to break as soon as we see a dessert who's "startProductionAmount" is greater
-            // than the amount sold.
-            break
+            break  // Sale del ciclo ya que la lista está ordenada
         }
     }
 
-    return dessertToShow
+    return dessertToShow // Devuelve el postre seleccionado
 }
 
 /**
- * Share desserts sold information using ACTION_SEND intent
+ * Función para compartir información sobre postres vendidos e ingresos.
+ * @param intentContext Contexto para crear el Intent
+ * @param dessertsSold Cantidad total de postres vendidos
+ * @param revenue Ingresos acumulados
  */
 private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: Int, revenue: Int) {
     val sendIntent = Intent().apply {
-        action = Intent.ACTION_SEND
+        action = Intent.ACTION_SEND  // Intent para enviar texto
         putExtra(
             Intent.EXTRA_TEXT,
-            intentContext.getString(R.string.share_text, dessertsSold, revenue)
+            intentContext.getString(R.string.share_text, dessertsSold, revenue) // Texto a compartir formateado
         )
-        type = "text/plain"
+        type = "text/plain"  // Tipo MIME del contenido
     }
 
-    val shareIntent = Intent.createChooser(sendIntent, null)
+    val shareIntent = Intent.createChooser(sendIntent, null)  // Crea selector para apps compatibles
 
     try {
-        ContextCompat.startActivity(intentContext, shareIntent, null)
+        ContextCompat.startActivity(intentContext, shareIntent, null)  // Intenta lanzar la actividad de compartir
     } catch (e: ActivityNotFoundException) {
+        // Si no hay app compatible, muestra mensaje
         Toast.makeText(
             intentContext,
             intentContext.getString(R.string.sharing_not_available),
@@ -178,7 +184,7 @@ private fun shareSoldDessertsInformation(intentContext: Context, dessertsSold: I
 private fun DessertClickerApp(
     desserts: List<Dessert>
 ) {
-
+    // Variables de estado para ingresos, postres vendidos y detalles del postre actual
     var revenue by rememberSaveable { mutableStateOf(0) }
     var dessertsSold by rememberSaveable { mutableStateOf(0) }
 
@@ -191,12 +197,12 @@ private fun DessertClickerApp(
         mutableStateOf(desserts[currentDessertIndex].imageId)
     }
 
-    Scaffold(
+    Scaffold(// Scaffold para diseño básico con barra superior
         topBar = {
-            val intentContext = LocalContext.current
-            val layoutDirection = LocalLayoutDirection.current
+            val intentContext = LocalContext.current// Contexto para compartir
+            val layoutDirection = LocalLayoutDirection.current // Dirección LTR/RTL
             DessertClickerAppBar(
-                onShareButtonClicked = {
+                onShareButtonClicked = {// Evento para compartir cuando se presiona el botón
                     shareSoldDessertsInformation(
                         intentContext = intentContext,
                         dessertsSold = dessertsSold,
@@ -222,10 +228,10 @@ private fun DessertClickerApp(
             onDessertClicked = {
 
                 // Update the revenue
-                revenue += currentDessertPrice
-                dessertsSold++
+                revenue += currentDessertPrice// Aumenta ingresos al vender
+                dessertsSold++// Incrementa cantidad vendida
 
-                // Show the next dessert
+                // Actualiza el postre a mostrar según la cantidad vendida
                 val dessertToShow = determineDessertToShow(desserts, dessertsSold)
                 currentDessertImageId = dessertToShow.imageId
                 currentDessertPrice = dessertToShow.price
@@ -241,24 +247,24 @@ private fun DessertClickerAppBar(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,  // Aplica el modificador recibido
+        horizontalArrangement = Arrangement.SpaceBetween,  // Separa elementos a los extremos horizontalmente
+        verticalAlignment = Alignment.CenterVertically,  // Centra verticalmente los elementos en la fila
     ) {
         Text(
-            text = stringResource(R.string.app_name),
-            modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_medium)),
-            color = MaterialTheme.colorScheme.onPrimary,
-            style = MaterialTheme.typography.titleLarge,
+            text = stringResource(R.string.app_name),  // Texto con el nombre de la app (recuperado de recursos)
+            modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_medium)),  // Padding a la izquierda
+            color = MaterialTheme.colorScheme.onPrimary,  // Color del texto según el tema, para que contraste con fondo primario
+            style = MaterialTheme.typography.titleLarge,  // Estilo de texto grande para títulos
         )
         IconButton(
-            onClick = onShareButtonClicked,
-            modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_medium)),
+            onClick = onShareButtonClicked,  // Acción al presionar el botón (compartir)
+            modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_medium)),  // Padding a la derecha
         ) {
             Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = stringResource(R.string.share),
-                tint = MaterialTheme.colorScheme.onPrimary
+                imageVector = Icons.Filled.Share,  // Icono de compartir
+                contentDescription = stringResource(R.string.share),  // Texto accesible para lectores de pantalla
+                tint = MaterialTheme.colorScheme.onPrimary  // Color del icono para que contraste con fondo primario
             )
         }
     }
@@ -272,33 +278,33 @@ fun DessertClickerScreen(
     onDessertClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier) {
+    Box(modifier = modifier) {  // Contenedor base que permite superposición de elementos
         Image(
-            painter = painterResource(R.drawable.bakery_back),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
+            painter = painterResource(R.drawable.bakery_back),  // Imagen de fondo (panadería)
+            contentDescription = null,  // No se proporciona descripción accesible porque es decorativa
+            contentScale = ContentScale.Crop  // Escala para cubrir todo el espacio sin distorsión
         )
-        Column {
+        Column {  // Contenedor vertical para colocar imagen y datos uno debajo de otro
             Box(
                 modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
+                    .weight(1f)  // Ocupa todo el espacio disponible verticalmente
+                    .fillMaxWidth(),  // Ancho completo
             ) {
                 Image(
-                    painter = painterResource(dessertImageId),
-                    contentDescription = null,
+                    painter = painterResource(dessertImageId),  // Imagen del postre actual
+                    contentDescription = null,  // Descripción accesible no definida, se puede agregar si se desea
                     modifier = Modifier
-                        .width(dimensionResource(R.dimen.image_size))
-                        .height(dimensionResource(R.dimen.image_size))
-                        .align(Alignment.Center)
-                        .clickable { onDessertClicked() },
-                    contentScale = ContentScale.Crop,
+                        .width(dimensionResource(R.dimen.image_size))  // Ancho fijo según recurso de dimensión
+                        .height(dimensionResource(R.dimen.image_size))  // Altura fija según recurso
+                        .align(Alignment.Center)  // Centra la imagen dentro del Box
+                        .clickable { onDessertClicked() },  // Acción al tocar la imagen
+                    contentScale = ContentScale.Crop,  // Escala la imagen para cubrir su área sin distorsión
                 )
             }
             TransactionInfo(
-                revenue = revenue,
-                dessertsSold = dessertsSold,
-                modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+                revenue = revenue,  // Pasa ingresos
+                dessertsSold = dessertsSold,  // Pasa cantidad vendida
+                modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)  // Fondo para la info
             )
         }
     }
@@ -310,18 +316,18 @@ private fun TransactionInfo(
     dessertsSold: Int,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier) {  // Columna para poner datos verticalmente
         DessertsSoldInfo(
-            dessertsSold = dessertsSold,
+            dessertsSold = dessertsSold,  // Cantidad de postres vendidos
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium))
+                .fillMaxWidth()  // Ancho completo
+                .padding(dimensionResource(R.dimen.padding_medium))  // Padding interno
         )
         RevenueInfo(
-            revenue = revenue,
+            revenue = revenue,  // Ingresos totales
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium))
+                .fillMaxWidth()  // Ancho completo
+                .padding(dimensionResource(R.dimen.padding_medium))  // Padding interno
         )
     }
 }
@@ -329,19 +335,19 @@ private fun TransactionInfo(
 @Composable
 private fun RevenueInfo(revenue: Int, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier,  // Aplica modificador recibido
+        horizontalArrangement = Arrangement.SpaceBetween,  // Separa elementos a los extremos horizontalmente
     ) {
         Text(
-            text = stringResource(R.string.total_revenue),
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            text = stringResource(R.string.total_revenue),  // Texto "Total Revenue"
+            style = MaterialTheme.typography.headlineMedium,  // Estilo de texto para encabezado mediano
+            color = MaterialTheme.colorScheme.onSecondaryContainer  // Color del texto para que contraste con fondo secundario
         )
         Text(
-            text = "$${revenue}",
-            textAlign = TextAlign.Right,
-            style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            text = "$${revenue}",  // Muestra la cantidad de ingresos con símbolo $
+            textAlign = TextAlign.Right,  // Texto alineado a la derecha
+            style = MaterialTheme.typography.headlineMedium,  // Mismo estilo que el título
+            color = MaterialTheme.colorScheme.onSecondaryContainer  // Color consistente con título
         )
     }
 }
@@ -349,18 +355,18 @@ private fun RevenueInfo(revenue: Int, modifier: Modifier = Modifier) {
 @Composable
 private fun DessertsSoldInfo(dessertsSold: Int, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier,  // Aplica modificador recibido
+        horizontalArrangement = Arrangement.SpaceBetween,  // Separa elementos a los extremos
     ) {
         Text(
-            text = stringResource(R.string.dessert_sold),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            text = stringResource(R.string.dessert_sold),  // Texto "Desserts Sold"
+            style = MaterialTheme.typography.titleLarge,  // Estilo de texto grande para títulos
+            color = MaterialTheme.colorScheme.onSecondaryContainer  // Color que contraste con fondo secundario
         )
         Text(
-            text = dessertsSold.toString(),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            text = dessertsSold.toString(),  // Muestra la cantidad vendida en texto
+            style = MaterialTheme.typography.titleLarge,  // Mismo estilo que el título
+            color = MaterialTheme.colorScheme.onSecondaryContainer  // Color consistente
         )
     }
 }
@@ -369,6 +375,6 @@ private fun DessertsSoldInfo(dessertsSold: Int, modifier: Modifier = Modifier) {
 @Composable
 fun MyDessertClickerAppPreview() {
     DessertClickerTheme {
-        DessertClickerApp(listOf(Dessert(R.drawable.cupcake, 5, 0)))
+        DessertClickerApp(listOf(Dessert(R.drawable.cupcake, 5, 0)))  // Vista previa con un cupcake y precio 5
     }
 }
