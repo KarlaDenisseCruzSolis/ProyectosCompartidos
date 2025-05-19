@@ -21,12 +21,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.cupcake.ui.theme.CupcakeTheme
 
+// Actividad principal de la app
 class MainActivity : ComponentActivity() {
+    // Metodo que se llama al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Habilita la visualización a pantalla completa sin barras de sistema (modo edge to edge)
         enableEdgeToEdge()
+        // Llama al metodo onCreate de la clase padre para inicializar la actividad
         super.onCreate(savedInstanceState)
+        // Define el contenido de la actividad usando Jetpack Compose
         setContent {
+            // Aplica el tema personalizado de la app
             CupcakeTheme {
+                // Llama al Composable principal que contiene la app
                 CupcakeApp()
             }
         }

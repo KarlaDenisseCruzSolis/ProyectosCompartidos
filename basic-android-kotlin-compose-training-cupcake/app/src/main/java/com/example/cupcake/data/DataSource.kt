@@ -17,18 +17,21 @@ package com.example.cupcake.data
 
 import com.example.cupcake.R
 
+// Objeto singleton que provee datos estáticos para la app
 object DataSource {
+    // Lista de recursos de texto que representan los sabores disponibles de cupcake
     val flavors = listOf(
-        R.string.vanilla,
-        R.string.chocolate,
-        R.string.red_velvet,
-        R.string.salted_caramel,
-        R.string.coffee
+        R.string.vanilla,         // Vainilla
+        R.string.chocolate,       // Chocolate
+        R.string.red_velvet,      // Red Velvet
+        R.string.salted_caramel,  // Caramelo Salado
+        R.string.coffee           // Café
     )
 
+    // Lista de pares que contienen la descripción del número de cupcakes y su cantidad numérica
     val quantityOptions = listOf(
-        Pair(R.string.one_cupcake, 1),
-        Pair(R.string.six_cupcakes, 6),
-        Pair(R.string.twelve_cupcakes, 12)
+        Pair(R.string.one_cupcake, 1),      // Una pieza
+        Pair(R.string.six_cupcakes, 6),     // Seis piezas
+        Pair(R.string.twelve_cupcakes, 12)  // Doce piezas
     )
 }
