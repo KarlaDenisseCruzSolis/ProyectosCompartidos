@@ -19,7 +19,8 @@ package com.example.amphibians.network
 import com.example.amphibians.model.Amphibian
 import retrofit2.http.GET
 
-interface AmphibiansApiService {
-    @GET("amphibians")
-    suspend fun getAmphibians(): List<Amphibian>
+
+interface AmphibiansApiService {  // Interfaz que define las llamadas a la API para anfibios
+    @GET("amphibians")  // Define una petición GET a la ruta "amphibians"
+    suspend fun getAmphibians(): List<Amphibian>  // Función suspendida que devuelve una lista de Amphibian desde la red
 }

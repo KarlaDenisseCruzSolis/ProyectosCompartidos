@@ -34,10 +34,10 @@ import java.io.IOException
 /**
  * UI state for the Home screen
  */
-sealed interface AmphibiansUiState {
-    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState
-    object Error : AmphibiansUiState
-    object Loading : AmphibiansUiState
+sealed interface AmphibiansUiState {   // Interfaz sellada que define estados posibles de la UI
+    data class Success(val amphibians: List<Amphibian>) : AmphibiansUiState  // Estado éxito con lista de anfibios
+    object Error : AmphibiansUiState       // Estado error si falla la carga de datos
+    object Loading : AmphibiansUiState     // Estado carga mientras se obtienen datos
 }
 
 /**
@@ -45,22 +45,22 @@ sealed interface AmphibiansUiState {
  */
 class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository) : ViewModel() {
 
-    var amphibiansUiState: AmphibiansUiState by mutableStateOf(AmphibiansUiState.Loading)
-        private set
+    var amphibiansUiState: AmphibiansUiState by mutableStateOf(AmphibiansUiState.Loading)  // Estado observable inicializado en Loading
+        private set   // El setter es privado para que solo esta clase pueda modificar el estado
 
     init {
-        getAmphibians()
+        getAmphibians()   // Al crear el ViewModel, inicia la carga de datos
     }
 
     fun getAmphibians() {
-        viewModelScope.launch {
-            amphibiansUiState = AmphibiansUiState.Loading
+        viewModelScope.launch {  // Lanza una corrutina ligada al ciclo de vida del ViewModel
+            amphibiansUiState = AmphibiansUiState.Loading  // Cambia estado a Loading antes de obtener datos
             amphibiansUiState = try {
-                AmphibiansUiState.Success(amphibiansRepository.getAmphibians())
+                AmphibiansUiState.Success(amphibiansRepository.getAmphibians())  // Intenta obtener datos y asignar estado éxito
             } catch (e: IOException) {
-                AmphibiansUiState.Error
+                AmphibiansUiState.Error    // Si ocurre un error de red o disco, cambia a estado error
             } catch (e: HttpException) {
-                AmphibiansUiState.Error
+                AmphibiansUiState.Error    // Si ocurre un error HTTP, cambia a estado error
             }
         }
     }
@@ -68,13 +68,13 @@ class AmphibiansViewModel(private val amphibiansRepository: AmphibiansRepository
     /**
      * Factory for [AmphibiansViewModel] that takes [AmphibiansRepository] as a dependency
      */
-    companion object {
+    companion object {    // Objeto companion que contiene la fábrica para crear este ViewModel
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY]
-                        as AmphibiansApplication)
-                val amphibiansRepository = application.container.amphibiansRepository
-                AmphibiansViewModel(amphibiansRepository = amphibiansRepository)
+                        as AmphibiansApplication)  // Obtiene la instancia de la aplicación personalizada
+                val amphibiansRepository = application.container.amphibiansRepository  // Obtiene el repositorio del contenedor de dependencias
+                AmphibiansViewModel(amphibiansRepository = amphibiansRepository)  // Crea y retorna el ViewModel con el repositorio inyectado
             }
         }
     }

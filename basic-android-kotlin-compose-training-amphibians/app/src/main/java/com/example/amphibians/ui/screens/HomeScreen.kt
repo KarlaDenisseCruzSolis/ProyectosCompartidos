@@ -49,16 +49,18 @@ import com.example.amphibians.R
 import com.example.amphibians.model.Amphibian
 import com.example.amphibians.ui.theme.AmphibiansTheme
 
+// Composable principal de la pantalla de inicio
 @Composable
 fun HomeScreen(
-    amphibiansUiState: AmphibiansUiState,
-    retryAction: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    amphibiansUiState: AmphibiansUiState, // Estado de la UI que puede ser Loading, Success o Error
+    retryAction: () -> Unit,              // Acción para reintentar en caso de error
+    modifier: Modifier = Modifier,        // Modificador para la UI
+    contentPadding: PaddingValues = PaddingValues(0.dp) // Padding adicional si es necesario
 ) {
+    // Control de flujo según el estado de la UI
     when (amphibiansUiState) {
-        is AmphibiansUiState.Loading -> LoadingScreen(modifier.size(200.dp))
-        is AmphibiansUiState.Success ->
+        is AmphibiansUiState.Loading -> LoadingScreen(modifier.size(200.dp)) // Mostrar pantalla de carga
+        is AmphibiansUiState.Success -> // Mostrar lista de anfibios si la carga fue exitosa
             AmphibiansListScreen(
                 amphibians = amphibiansUiState.amphibians,
                 modifier = modifier
@@ -69,44 +71,45 @@ fun HomeScreen(
                     ),
                 contentPadding = contentPadding
             )
-        else -> ErrorScreen(retryAction, modifier)
+        else -> ErrorScreen(retryAction, modifier) // Mostrar pantalla de error si ocurre una falla
     }
 }
 
 /**
- * The home screen displaying the loading message.
+ * Pantalla que se muestra mientras se cargan los datos.
  */
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = stringResource(R.string.loading),
-        modifier = modifier
+        painter = painterResource(R.drawable.loading_img), // Imagen mostrada durante la carga
+        contentDescription = stringResource(R.string.loading), // Texto accesible para la imagen
+        modifier = modifier // Aplicación del modificador recibido
     )
 }
 
 /**
- * The home screen displaying error message with re-attempt button.
+ * Pantalla que se muestra si ocurre un error al cargar datos, incluye botón para reintentar.
  */
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Center, // Alinear elementos verticalmente al centro
+        horizontalAlignment = Alignment.CenterHorizontally // Alinear horizontalmente al centro
     ) {
-        Text(stringResource(R.string.loading_failed))
-        Button(onClick = retryAction) {
+        Text(stringResource(R.string.loading_failed)) // Mostrar mensaje de error
+        Button(onClick = retryAction) {               // Botón para reintentar
             Text(stringResource(R.string.retry))
         }
     }
 }
 
+// Composable que muestra una tarjeta individual con datos de un anfibio
 @Composable
 fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(8.dp)
+        modifier = modifier,                         // Modificador para la tarjeta
+        shape = RoundedCornerShape(8.dp)             // Bordes redondeados
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
@@ -119,18 +122,18 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
                 textAlign = TextAlign.Start
             )
             AsyncImage(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),  // Imagen ocupa todo el ancho
                 model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(amphibian.imgSrc)
-                    .crossfade(true)
+                    .data(amphibian.imgSrc)          // URL de la imagen del anfibio
+                    .crossfade(true)                 // Transición suave
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
-                error = painterResource(id = R.drawable.ic_broken_image),
-                placeholder = painterResource(id = R.drawable.loading_img)
+                error = painterResource(id = R.drawable.ic_broken_image), // Imagen de error
+                placeholder = painterResource(id = R.drawable.loading_img) // Imagen de carga
             )
             Text(
-                text = amphibian.description,
+                text = amphibian.description,        // Descripción del anfibio
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Justify,
                 modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
@@ -139,6 +142,7 @@ fun AmphibianCard(amphibian: Amphibian, modifier: Modifier = Modifier) {
     }
 }
 
+// Composable que muestra la lista de anfibios en una columna perezosa (LazyColumn)
 @Composable
 private fun AmphibiansListScreen(
     amphibians: List<Amphibian>,
@@ -148,11 +152,11 @@ private fun AmphibiansListScreen(
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp) // Espacio vertical entre elementos
     ) {
         items(
-            items = amphibians,
-            key = { amphibian ->
+            items = amphibians,        // Lista de elementos
+            key = { amphibian ->       // Clave única por nombre
                 amphibian.name
             }
         ) { amphibian ->
@@ -161,6 +165,7 @@ private fun AmphibiansListScreen(
     }
 }
 
+// Vista previa de la pantalla de carga para el editor
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
@@ -173,6 +178,7 @@ fun LoadingScreenPreview() {
     }
 }
 
+// Vista previa de la pantalla de error para el editor
 @Preview(showBackground = true)
 @Composable
 fun ErrorScreenPreview() {
@@ -181,6 +187,7 @@ fun ErrorScreenPreview() {
     }
 }
 
+// Vista previa de la lista de anfibios con datos ficticios
 @Preview(showBackground = true)
 @Composable
 fun AmphibiansListScreenPreview() {

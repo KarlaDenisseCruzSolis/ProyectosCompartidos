@@ -22,10 +22,10 @@ import kotlinx.serialization.Serializable
 /**
  * Data class that defines an amphibian which includes a name, type, description, and image URL.
  */
-@Serializable
-data class Amphibian(
-    val name: String,
-    val type: String,
-    val description: String,
-    @SerialName("img_src") val imgSrc: String
+@Serializable   // Anotación para que la clase pueda ser serializada y deserializada automáticamente
+data class Amphibian(   // Clase de datos que representa un anfibio
+    val name: String,   // Nombre del anfibio
+    val type: String,   // Tipo o especie del anfibio
+    val description: String,   // Descripción del anfibio
+    @SerialName("img_src") val imgSrc: String  // URL de la imagen del anfibio, con nombre en JSON "img_src"
 )

@@ -20,11 +20,16 @@ import android.app.Application
 import com.example.amphibians.data.AppContainer
 import com.example.amphibians.data.DefaultAppContainer
 
+// Clase principal de la aplicación, se ejecuta al iniciar la app
 class AmphibiansApplication : Application() {
     /** AppContainer instance used by the rest of classes to obtain dependencies */
+    // Declaración de una propiedad lateinit para almacenar el contenedor de dependencias
     lateinit var container: AppContainer
+
+    // Metodo que se ejecuta cuando se crea la aplicación
     override fun onCreate() {
         super.onCreate()
+        // Inicializa el contenedor de dependencias con su implementación por defecto
         container = DefaultAppContainer()
     }
 }

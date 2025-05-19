@@ -26,16 +26,21 @@ import androidx.compose.ui.Modifier
 import com.example.amphibians.ui.AmphibiansApp
 import com.example.amphibians.ui.theme.AmphibiansTheme
 
+// Clase MainActivity que hereda de ComponentActivity y representa la entrada principal de la app
 class MainActivity : ComponentActivity() {
+    // Metodo que se llama cuando se crea la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Establece el contenido de la actividad utilizando Jetpack Compose
         setContent {
+            // Aplica el tema personalizado de la aplicación
             AmphibiansTheme {
-                // A surface container using the 'background' color from the theme
+                // Contenedor Surface que utiliza el color de fondo del tema
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), // Ocupa todo el tamaño disponible
+                    color = MaterialTheme.colorScheme.background // Usa el color de fondo del tema
                 ) {
+                    // Llama al componente principal de la app que contiene la UI
                     AmphibiansApp()
                 }
             }
