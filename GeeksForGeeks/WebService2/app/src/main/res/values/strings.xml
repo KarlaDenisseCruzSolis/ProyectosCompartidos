@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">WebService2</string>
+    <string name="boton">Consulta</string>
+    <string name="consulta">Consulta:</string>
+</resources>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- Spread -->
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:background="@color/purple_700"
+        android:padding="8dp"
+        android:text="ConstraintLayoutExample"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvSpread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:text="Spread"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="86dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:text="BTN1"
+        app:layout_constraintEnd_toStartOf="@id/btn2"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSpread" />
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="86dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
+        android:text="BTN2"
+        app:layout_constraintEnd_toStartOf="@id/btn3"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/btn1"
+        app:layout_constraintTop_toBottomOf="@id/tvSpread" />
+
+    <!-- Spread Inside -->
+
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="89dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
+        android:text="BTN3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/btn2"
+        app:layout_constraintTop_toBottomOf="@id/tvSpread" />
+
+    <TextView
+        android:id="@+id/tvSpreadInside"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Spread Inside"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn3" />
+
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="91dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="BTN1"
+        app:layout_constraintEnd_toStartOf="@id/btn5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvSpreadInside" />
+
+    <Button
+        android:id="@+id/btn5"
+        android:layout_width="99dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:text="BTN2"
+        app:layout_constraintEnd_toStartOf="@id/btn6"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/btn4"
+        app:layout_constraintTop_toBottomOf="@id/tvSpreadInside" />
+
+    <!-- Packed -->
+
+    <Button
+        android:id="@+id/btn6"
+        android:layout_width="96dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:text="BTN3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/btn5"
+        app:layout_constraintTop_toBottomOf="@id/tvSpreadInside" />
+
+    <TextView
+        android:id="@+id/tvPacked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Packed"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn6" />
+
+    <Button
+        android:id="@+id/btn7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="BTN1"
+        app:layout_constraintEnd_toStartOf="@id/btn8"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvPacked" />
+
+    <Button
+        android:id="@+id/btn8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="BTN2"
+        app:layout_constraintEnd_toStartOf="@id/btn9"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/btn7"
+        app:layout_constraintTop_toBottomOf="@id/tvPacked" />
+
+    <Button
+        android:id="@+id/btn9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="BTN3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/btn8"
+        app:layout_constraintTop_toBottomOf="@id/tvPacked" />
+
+    <!-- Weighted -->
+    <TextView
+        android:id="@+id/tvWeighted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Weighted"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn9" />
+
+    <Button
+        android:id="@+id/btn10"
+        android:layout_width="96dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
+        android:text="BTN1"
+        app:layout_constraintEnd_toStartOf="@id/btn11"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvWeighted" />
+
+    <Button
+        android:id="@+id/btn11"
+        android:layout_width="95dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="BTN2"
+        app:layout_constraintEnd_toStartOf="@id/btn12"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/btn10"
+        app:layout_constraintTop_toBottomOf="@id/tvWeighted" />
+
+    <Button
+        android:id="@+id/btn12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="BTN3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/btn11"
+        app:layout_constraintTop_toBottomOf="@id/tvWeighted" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

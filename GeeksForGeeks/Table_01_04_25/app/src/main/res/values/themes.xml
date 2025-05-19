@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Estilo corregido con el parent adecuado -->
+    <style name="Theme.Table_01_04_25" parent="Theme.AppCompat.Light.NoActionBar" />
+</resources>
