@@ -42,66 +42,75 @@ import com.example.affirmations.data.Datasource
 import com.example.affirmations.model.Affirmation
 import com.example.affirmations.ui.theme.AffirmationsTheme
 
+// Clase principal de la actividad
 class MainActivity : ComponentActivity() {
 
+    // Metodo que se ejecuta al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AffirmationsTheme {
-                // A surface container using the 'background' color from the theme
+                // Contenedor Surface que usa el color de fondo del tema
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), // Ocupa todo el tamaño disponible
+                    color = MaterialTheme.colorScheme.background // Usa el color de fondo del tema
                 ) {
-                    AffirmationsApp()
+                    AffirmationsApp() // Llama a la función principal de la app
                 }
             }
         }
     }
 }
 
+// Función composable principal de la aplicación
 @Composable
 fun AffirmationsApp() {
     AffirmationList(
-        affirmationList = Datasource().loadAffirmations(),
+        affirmationList = Datasource().loadAffirmations(), // Carga las afirmaciones desde la fuente de datos
     )
 }
 
+// Muestra una lista de afirmaciones en forma de tarjetas usando LazyColumn
 @Composable
 fun AffirmationList(affirmationList: List<Affirmation>, modifier: Modifier = Modifier) {
     LazyColumn(modifier = modifier) {
+        // Crea un ítem para cada afirmación en la lista
         items(affirmationList) { affirmation ->
             AffirmationCard(
                 affirmation = affirmation,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp) // Aplica margen a cada tarjeta
             )
         }
     }
 }
 
+// Muestra una sola tarjeta de afirmación con imagen y texto
 @Composable
 fun AffirmationCard(affirmation: Affirmation, modifier: Modifier = Modifier) {
     Card(modifier = modifier) {
         Column {
+            // Muestra la imagen de la afirmación
             Image(
-                painter = painterResource(affirmation.imageResourceId),
-                contentDescription = stringResource(affirmation.stringResourceId),
+                painter = painterResource(affirmation.imageResourceId), // Carga la imagen desde recursos
+                contentDescription = stringResource(affirmation.stringResourceId), // Proporciona descripción accesible
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(194.dp),
-                contentScale = ContentScale.Crop
+                    .fillMaxWidth() // Imagen ocupa todo el ancho
+                    .height(194.dp), // Altura fija de la imagen
+                contentScale = ContentScale.Crop // Recorta y llena el contenedor
             )
+            // Muestra el texto de la afirmación
             Text(
-                text = LocalContext.current.getString(affirmation.stringResourceId),
-                modifier = Modifier.padding(16.dp),
-                style = MaterialTheme.typography.headlineSmall
+                text = LocalContext.current.getString(affirmation.stringResourceId), // Obtiene el texto desde recursos
+                modifier = Modifier.padding(16.dp), // Aplica padding alrededor del texto
+                style = MaterialTheme.typography.headlineSmall // Usa estilo de título pequeño del tema
             )
         }
     }
 }
 
+// Vista previa de una tarjeta de afirmación en el editor
 @Preview
 @Composable
 private fun AffirmationCardPreview() {
-    AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1))
+    AffirmationCard(Affirmation(R.string.affirmation1, R.drawable.image1)) // Muestra ejemplo con afirmación 1
 }

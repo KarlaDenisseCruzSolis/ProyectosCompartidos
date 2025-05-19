@@ -21,12 +21,15 @@ import com.example.affirmations.model.Affirmation
 /**
  * [Datasource] generates a list of [Affirmation]
  */
+/**
+ * [Datasource] genera una lista de objetos [Affirmation]
+ */
 class Datasource() {
-    fun loadAffirmations(): List<Affirmation> {
-        return listOf<Affirmation>(
-            Affirmation(R.string.affirmation1, R.drawable.image1),
-            Affirmation(R.string.affirmation2, R.drawable.image2),
-            Affirmation(R.string.affirmation3, R.drawable.image3),
+    fun loadAffirmations(): List<Affirmation> {// Función que devuelve una lista de afirmaciones
+        return listOf<Affirmation>(// Retorna una lista de afirmaciones
+            Affirmation(R.string.affirmation1, R.drawable.image1),// Afirmación 1 con su imagen
+            Affirmation(R.string.affirmation2, R.drawable.image2), // Afirmación 2 con su imagen
+            Affirmation(R.string.affirmation3, R.drawable.image3),// Afirmación 3 con su imagen
             Affirmation(R.string.affirmation4, R.drawable.image4),
             Affirmation(R.string.affirmation5, R.drawable.image5),
             Affirmation(R.string.affirmation6, R.drawable.image6),
