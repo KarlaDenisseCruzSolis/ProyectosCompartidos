@@ -54,92 +54,106 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.lemonade.ui.theme.AppTheme
 
+// La clase principal de la actividad de la aplicación.
 class MainActivity : ComponentActivity() {
 
+    // Se llama cuando la actividad se crea por primera vez.
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // Habilita el dibujo de contenido de borde a borde.
+        super.onCreate(savedInstanceState) // Llama a la implementación de la superclase.
         setContent {
+            // Establece el contenido de la actividad usando Jetpack Compose.
             AppTheme {
-                LemonadeApp()
+                // Aplica el tema personalizado de la aplicación.
+                LemonadeApp() // Renderiza la aplicación principal de Lemonade.
             }
         }
     }
 }
 
+// Anotación para indicar que se están utilizando APIs experimentales de Material 3.
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LemonadeApp() {
 
+    // Estado mutable para rastrear el paso actual de la aplicación. Se inicializa en 1.
     var currentStep by remember { mutableStateOf(1) }
 
+    // Estado mutable para rastrear la cantidad de veces que se debe exprimir el limón. Se inicializa en 0.
     var squeezeCount by remember { mutableStateOf(0) }
 
+    // Scaffold proporciona una estructura de diseño básica de Material Design.
     Scaffold(
         topBar = {
+            // CenterAlignedTopAppBar para una barra superior con el título centrado.
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "Lemonade",
-                        fontWeight = FontWeight.Bold
+                        text = "Lemonade", // Título de la aplicación.
+                        fontWeight = FontWeight.Bold // Fuente en negrita para el título.
                     )
                 },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
+                    containerColor = MaterialTheme.colorScheme.primaryContainer // Color de fondo de la barra superior.
                 )
             )
         }
-    ) { innerPadding ->
+    ) { innerPadding -> // innerPadding se usa para aplicar el relleno de la barra superior al contenido.
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.tertiaryContainer),
-            color = MaterialTheme.colorScheme.background
+                .fillMaxSize() // El Surface ocupa todo el espacio disponible.
+                .padding(innerPadding) // Aplica el relleno para evitar que el contenido se superponga con la barra superior.
+                .background(MaterialTheme.colorScheme.tertiaryContainer), // Color de fondo del Surface.
+            color = MaterialTheme.colorScheme.background // Color de fondo general de la pantalla.
         ) {
+            // Un 'when' para manejar los diferentes pasos de la aplicación.
             when (currentStep) {
                 1 -> {
+                    // Primer paso: Seleccionar el limón.
                     LemonTextAndImage(
-                        textLabelResourceId = R.string.lemon_select,
-                        drawableResourceId = R.drawable.lemon_tree,
-                        contentDescriptionResourceId = R.string.lemon_tree_content_description,
+                        textLabelResourceId = R.string.lemon_select, // Texto "Toca el limonero para empezar".
+                        drawableResourceId = R.drawable.lemon_tree, // Imagen del limonero.
+                        contentDescriptionResourceId = R.string.lemon_tree_content_description, // Descripción de contenido para accesibilidad.
                         onImageClick = {
-                            currentStep = 2
-                            squeezeCount = (2..4).random()
+                            currentStep = 2 // Pasa al siguiente paso.
+                            squeezeCount = (2..4).random() // Genera un número aleatorio de veces que se debe exprimir.
                         }
                     )
                 }
                 2 -> {
+                    // Segundo paso: Exprimir el limón.
                     LemonTextAndImage(
-                        textLabelResourceId = R.string.lemon_squeeze,
-                        drawableResourceId = R.drawable.lemon_squeeze,
-                        contentDescriptionResourceId = R.string.lemon_content_description,
+                        textLabelResourceId = R.string.lemon_squeeze, // Texto "Sigue tocando el limón para exprimirlo".
+                        drawableResourceId = R.drawable.lemon_squeeze, // Imagen del limón siendo exprimido.
+                        contentDescriptionResourceId = R.string.lemon_content_description, // Descripción de contenido.
                         onImageClick = {
-                            squeezeCount--
+                            squeezeCount-- // Decrementa el contador de exprimir.
                             if (squeezeCount == 0) {
-                                currentStep = 3
+                                currentStep = 3 // Si se exprime lo suficiente, pasa al siguiente paso.
                             }
                         }
                     )
                 }
 
                 3 -> {
+                    // Tercer paso: Beber la limonada.
                     LemonTextAndImage(
-                        textLabelResourceId = R.string.lemon_drink,
-                        drawableResourceId = R.drawable.lemon_drink,
-                        contentDescriptionResourceId = R.string.lemonade_content_description,
+                        textLabelResourceId = R.string.lemon_drink, // Texto "Toca la limonada para beberla".
+                        drawableResourceId = R.drawable.lemon_drink, // Imagen del vaso de limonada.
+                        contentDescriptionResourceId = R.string.lemonade_content_description, // Descripción de contenido.
                         onImageClick = {
-                            currentStep = 4
+                            currentStep = 4 // Pasa al siguiente paso.
                         }
                     )
                 }
                 4 -> {
+                    // Cuarto paso: Vaso vacío, reiniciar.
                     LemonTextAndImage(
-                        textLabelResourceId = R.string.lemon_empty_glass,
-                        drawableResourceId = R.drawable.lemon_restart,
-                        contentDescriptionResourceId = R.string.empty_glass_content_description,
+                        textLabelResourceId = R.string.lemon_empty_glass, // Texto "Toca el vaso vacío para volver a empezar".
+                        drawableResourceId = R.drawable.lemon_restart, // Imagen del vaso vacío.
+                        contentDescriptionResourceId = R.string.empty_glass_content_description, // Descripción de contenido.
                         onImageClick = {
-                            currentStep = 1
+                            currentStep = 1 // Regresa al primer paso.
                         }
                     )
                 }
@@ -148,49 +162,51 @@ fun LemonadeApp() {
     }
 }
 
+// Composable que muestra un texto y una imagen interactiva.
 @Composable
 fun LemonTextAndImage(
-    textLabelResourceId: Int,
-    drawableResourceId: Int,
-    contentDescriptionResourceId: Int,
-    onImageClick: () -> Unit,
-    modifier: Modifier = Modifier
+    textLabelResourceId: Int, // ID de recurso para el texto a mostrar.
+    drawableResourceId: Int, // ID de recurso para la imagen a mostrar.
+    contentDescriptionResourceId: Int, // ID de recurso para la descripción de contenido de la imagen.
+    onImageClick: () -> Unit, // Función de lambda que se ejecuta al hacer clic en la imagen.
+    modifier: Modifier = Modifier // Modificador opcional para el diseño.
 ) {
     Box(
-        modifier = modifier
+        modifier = modifier // Aplica el modificador al Box.
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            horizontalAlignment = Alignment.CenterHorizontally, // Centra horizontalmente los elementos hijos.
+            verticalArrangement = Arrangement.Center, // Centra verticalmente los elementos hijos.
+            modifier = Modifier.fillMaxSize() // La columna ocupa todo el espacio disponible.
         ) {
             Button(
-                onClick = onImageClick,
-                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)),
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+                onClick = onImageClick, // Define la acción al hacer clic en el botón.
+                shape = RoundedCornerShape(dimensionResource(R.dimen.button_corner_radius)), // Forma del botón con esquinas redondeadas.
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer) // Colores del botón.
             ) {
                 Image(
-                    painter = painterResource(drawableResourceId),
-                    contentDescription = stringResource(contentDescriptionResourceId),
+                    painter = painterResource(drawableResourceId), // Carga la imagen desde los recursos.
+                    contentDescription = stringResource(contentDescriptionResourceId), // Descripción de contenido para accesibilidad.
                     modifier = Modifier
-                        .width(dimensionResource(R.dimen.button_image_width))
-                        .height(dimensionResource(R.dimen.button_image_height))
-                        .padding(dimensionResource(R.dimen.button_interior_padding))
+                        .width(dimensionResource(R.dimen.button_image_width)) // Ancho de la imagen.
+                        .height(dimensionResource(R.dimen.button_image_height)) // Altura de la imagen.
+                        .padding(dimensionResource(R.dimen.button_interior_padding)) // Relleno interno de la imagen.
                 )
             }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_vertical))) // Espacio vertical entre la imagen y el texto.
             Text(
-                text = stringResource(textLabelResourceId),
-                style = MaterialTheme.typography.bodyLarge
+                text = stringResource(textLabelResourceId), // Muestra el texto desde los recursos.
+                style = MaterialTheme.typography.bodyLarge // Estilo de texto.
             )
         }
     }
 }
 
+// Composable de previsualización para la aplicación Lemonade.
 @Preview
 @Composable
 fun LemonPreview() {
     AppTheme() {
-        LemonadeApp()
+        LemonadeApp() // Previsualiza la aplicación Lemonade.
     }
 }
