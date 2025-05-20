@@ -21,12 +21,12 @@ package com.example.inventory.ui.navigation
  */
 interface NavigationDestination {
     /**
-     * Unique name to define the path for a composable
+     * Nombre único para definir la ruta de un elemento componible (composable).
      */
     val route: String
 
     /**
-     * String resource id to that contains title to be displayed for the screen.
+     * ID de recurso de cadena que contiene el título a mostrar para la pantalla.
      */
     val titleRes: Int
 }
