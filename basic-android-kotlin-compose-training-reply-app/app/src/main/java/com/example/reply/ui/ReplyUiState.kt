@@ -25,5 +25,12 @@ data class ReplyUiState(
     val currentSelectedEmail: Email = LocalEmailsDataProvider.defaultEmail,
     val isShowingHomepage: Boolean = true
 ) {
+    /**
+     * Una propiedad calculada que devuelve la lista de correos electrónicos para el [currentMailbox] actual.
+     * Esta propiedad se inicializa de forma perezosa (`lazy`), lo que significa que su valor
+     * se calcula solo la primera vez que se accede a ella y luego se reutiliza.
+     * El `!!` asegura que siempre habrá una lista, asumiendo que `mailboxes` siempre contendrá
+     * una entrada para el `currentMailbox`.
+     */
     val currentMailboxEmails: List<Email> by lazy { mailboxes[currentMailbox]!! }
 }

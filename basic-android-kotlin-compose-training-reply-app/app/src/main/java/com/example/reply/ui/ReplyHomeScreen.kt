@@ -61,16 +61,16 @@ import com.example.reply.ui.utils.ReplyContentType
 import com.example.reply.ui.utils.ReplyNavigationType
 
 @Composable
-fun ReplyHomeScreen(
-    navigationType: ReplyNavigationType,
-    contentType: ReplyContentType,
-    replyUiState: ReplyUiState,
-    onTabPressed: (MailboxType) -> Unit,
-    onEmailCardPressed: (Email) -> Unit,
-    onDetailScreenBackPressed: () -> Unit,
-    modifier: Modifier = Modifier
+fun ReplyHomeScreen(// Función principal que define la pantalla de inicio de la app
+    navigationType: ReplyNavigationType, // Tipo de navegación: Rail, Drawer, Bottom
+    contentType: ReplyContentType,// Tipo de contenido: lista o lista+detalle
+    replyUiState: ReplyUiState,// Estado actual de la UI
+    onTabPressed: (MailboxType) -> Unit,// Acción al cambiar de pestaña
+    onEmailCardPressed: (Email) -> Unit,// Acción al seleccionar un email
+    onDetailScreenBackPressed: () -> Unit,// Acción al presionar "atrás"
+    modifier: Modifier = Modifier // Modificador opcional
 ) {
-    val navigationItemContentList = listOf(
+    val navigationItemContentList = listOf(// Lista de pestañas disponibles
         NavigationItemContent(
             mailboxType = MailboxType.Inbox,
             icon = Icons.Default.Inbox,
@@ -92,7 +92,7 @@ fun ReplyHomeScreen(
             text = stringResource(id = R.string.tab_spam)
         )
     )
-    if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER) {
+    if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER) {// Lista de pestañas disponibles
         val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
         PermanentNavigationDrawer(
             drawerContent = {
@@ -100,7 +100,7 @@ fun ReplyHomeScreen(
                     modifier = Modifier.width(dimensionResource(R.dimen.drawer_width)),
                     drawerContainerColor = MaterialTheme.colorScheme.inverseOnSurface,
                 ) {
-                    NavigationDrawerContent(
+                    NavigationDrawerContent(// Contenido del drawer
                         selectedDestination = replyUiState.currentMailbox,
                         onTabPressed = onTabPressed,
                         navigationItemContentList = navigationItemContentList,
@@ -114,7 +114,7 @@ fun ReplyHomeScreen(
             },
             modifier = Modifier.testTag(navigationDrawerContentDescription)
         ) {
-            ReplyAppContent(
+            ReplyAppContent(// Contenido principal de la app
                 navigationType = navigationType,
                 contentType = contentType,
                 replyUiState = replyUiState,
@@ -125,7 +125,7 @@ fun ReplyHomeScreen(
             )
         }
     } else {
-        if (replyUiState.isShowingHomepage) {
+        if (replyUiState.isShowingHomepage) {// Si se muestra la pantalla principal o la de detalles
             ReplyAppContent(
                 navigationType = navigationType,
                 contentType = contentType,
@@ -135,7 +135,7 @@ fun ReplyHomeScreen(
                 navigationItemContentList = navigationItemContentList,
                 modifier = modifier,
             )
-        } else {
+        } else {// Pantalla de detalles del correo
             ReplyDetailsScreen(
                 replyUiState = replyUiState,
                 onBackPressed = onDetailScreenBackPressed,
@@ -147,7 +147,7 @@ fun ReplyHomeScreen(
 }
 
 @Composable
-private fun ReplyAppContent(
+private fun ReplyAppContent(// Componente que construye el contenido de la app según tipo de navegación y contenido
     navigationType: ReplyNavigationType,
     contentType: ReplyContentType,
     replyUiState: ReplyUiState,
@@ -159,7 +159,7 @@ private fun ReplyAppContent(
     Box(modifier = modifier)
     {
         Row(modifier = Modifier.fillMaxSize()) {
-            AnimatedVisibility(visible = navigationType == ReplyNavigationType.NAVIGATION_RAIL) {
+            AnimatedVisibility(visible = navigationType == ReplyNavigationType.NAVIGATION_RAIL) {// Muestra Navigation Rail si aplica
                 val navigationRailContentDescription = stringResource(R.string.navigation_rail)
                 ReplyNavigationRail(
                     currentTab = replyUiState.currentMailbox,
@@ -168,12 +168,12 @@ private fun ReplyAppContent(
                     modifier = Modifier.testTag(navigationRailContentDescription)
                 )
             }
-            Column(
+            Column(// Columna principal del contenido
                 modifier = Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.inverseOnSurface)
             ) {
-                if (contentType == ReplyContentType.LIST_AND_DETAIL) {
+                if (contentType == ReplyContentType.LIST_AND_DETAIL) {// Muestra la lista y detalles si es necesario
                     ReplyListAndDetailContent(
                         replyUiState = replyUiState,
                         onEmailCardPressed = onEmailCardPressed,
@@ -182,6 +182,7 @@ private fun ReplyAppContent(
                             .weight(1f),
                     )
                 } else {
+                    // Muestra solo la lista
                     ReplyListOnlyContent(
                         replyUiState = replyUiState,
                         onEmailCardPressed = onEmailCardPressed,
@@ -190,7 +191,7 @@ private fun ReplyAppContent(
                             .padding(horizontal = dimensionResource(R.dimen.email_list_only_horizontal_padding))
                     )
                 }
-                AnimatedVisibility(
+                AnimatedVisibility(// Muestra barra de navegación inferior si aplica
                     visible = navigationType == ReplyNavigationType.BOTTOM_NAVIGATION
                 ) {
                     val bottomNavigationContentDescription = stringResource(R.string.navigation_bottom)
@@ -209,7 +210,7 @@ private fun ReplyAppContent(
 }
 
 @Composable
-private fun ReplyNavigationRail(
+private fun ReplyNavigationRail(// Componente para mostrar la Navigation Rail (barra lateral vertical)
     currentTab: MailboxType,
     onTabPressed: ((MailboxType) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
@@ -232,7 +233,7 @@ private fun ReplyNavigationRail(
 }
 
 @Composable
-private fun ReplyBottomNavigationBar(
+private fun ReplyBottomNavigationBar(// Componente para mostrar la barra inferior de navegación
     currentTab: MailboxType,
     onTabPressed: ((MailboxType) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
@@ -255,7 +256,7 @@ private fun ReplyBottomNavigationBar(
 }
 
 @Composable
-private fun NavigationDrawerContent(
+private fun NavigationDrawerContent(// Contenido del panel lateral (Navigation Drawer)
     selectedDestination: MailboxType,
     onTabPressed: ((MailboxType) -> Unit),
     navigationItemContentList: List<NavigationItemContent>,
@@ -267,7 +268,7 @@ private fun NavigationDrawerContent(
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.profile_image_padding)),
         )
-        for (navItem in navigationItemContentList) {
+        for (navItem in navigationItemContentList) {// Lista de pestañas en el drawer
             NavigationDrawerItem(
                 selected = selectedDestination == navItem.mailboxType,
                 label = {
@@ -292,7 +293,7 @@ private fun NavigationDrawerContent(
 }
 
 @Composable
-private fun NavigationDrawerHeader(
+private fun NavigationDrawerHeader(// Cabecera del panel lateral con el logo de la app y la imagen de perfil
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -300,8 +301,8 @@ private fun NavigationDrawerHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ReplyLogo(modifier = Modifier.size(dimensionResource(R.dimen.reply_logo_size)))
-        ReplyProfileImage(
+        ReplyLogo(modifier = Modifier.size(dimensionResource(R.dimen.reply_logo_size)))// Logo de la aplicación
+        ReplyProfileImage(// Imagen de perfil del usuario
             drawableResource = LocalAccountsDataProvider.defaultAccount.avatar,
             description = stringResource(id = R.string.profile),
             modifier = Modifier.size(dimensionResource(R.dimen.profile_image_size))
@@ -309,8 +310,8 @@ private fun NavigationDrawerHeader(
     }
 }
 
-private data class NavigationItemContent(
-    val mailboxType: MailboxType,
-    val icon: ImageVector,
-    val text: String
+private data class NavigationItemContent(// Clase de datos que representa cada elemento de navegación
+    val mailboxType: MailboxType,// Tipo de buzón (inbox, sent, etc.)
+    val icon: ImageVector, // Ícono correspondiente
+    val text: String // Texto a mostrar
 )

@@ -58,8 +58,10 @@ fun ReplyListOnlyContent(
     onEmailCardPressed: (Email) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Obtiene los correos electrónicos del buzón actual
     val emails = replyUiState.currentMailboxEmails
 
+    // Muestra una lista vertical con separación entre elementos
     LazyColumn(
         modifier = modifier,
         contentPadding = WindowInsets.safeDrawing.asPaddingValues(),
@@ -67,6 +69,7 @@ fun ReplyListOnlyContent(
             dimensionResource(R.dimen.email_list_item_vertical_spacing)
         )
     ) {
+        // Encabezado de la lista
         item {
             ReplyHomeTopBar(
                 modifier = Modifier
@@ -74,6 +77,7 @@ fun ReplyListOnlyContent(
                     .padding(vertical = dimensionResource(R.dimen.topbar_padding_vertical))
             )
         }
+        // Renderiza cada elemento de correo en la lista
         items(emails, key = { email -> email.id }) { email ->
             ReplyEmailListItem(
                 email = email,
@@ -92,11 +96,15 @@ fun ReplyListAndDetailContent(
     onEmailCardPressed: (Email) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Obtiene los correos electrónicos del buzón actual
     val emails = replyUiState.currentMailboxEmails
+
+    // Muestra dos columnas en una fila: lista de correos y detalle
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
+        // Lista de correos electrónicos
         LazyColumn(
             contentPadding = WindowInsets.statusBars.asPaddingValues(),
             modifier = Modifier
@@ -106,6 +114,7 @@ fun ReplyListAndDetailContent(
                 dimensionResource(R.dimen.email_list_item_vertical_spacing)
             )
         ) {
+            // Muestra cada correo, marcando el seleccionado
             items(emails, key = { email -> email.id }) { email ->
                 ReplyEmailListItem(
                     email = email,
@@ -116,7 +125,11 @@ fun ReplyListAndDetailContent(
                 )
             }
         }
+
+        // Obtiene la actividad actual para poder cerrar la vista al retroceder
         val activity = LocalContext.current as Activity
+
+        // Muestra la pantalla de detalles del correo
         ReplyDetailsScreen(
             replyUiState = replyUiState,
             modifier = Modifier
@@ -135,6 +148,7 @@ fun ReplyEmailListItem(
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Tarjeta de correo electrónico con color diferente si está seleccionada
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
@@ -146,15 +160,18 @@ fun ReplyEmailListItem(
         ),
         onClick = onCardClick
     ) {
+        // Contenido de la tarjeta
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.email_list_item_inner_padding))
         ) {
+            // Encabezado del correo con avatar y fecha
             ReplyEmailItemHeader(
                 email,
                 Modifier.fillMaxWidth()
             )
+            // Asunto del correo
             Text(
                 text = stringResource(email.subject),
                 style = MaterialTheme.typography.bodyLarge,
@@ -164,6 +181,7 @@ fun ReplyEmailListItem(
                     bottom = dimensionResource(R.dimen.email_list_item_subject_body_spacing)
                 ),
             )
+            // Cuerpo del correo, con máximo 2 líneas
             Text(
                 text = stringResource(email.body),
                 style = MaterialTheme.typography.bodyMedium,
@@ -177,13 +195,16 @@ fun ReplyEmailListItem(
 
 @Composable
 private fun ReplyEmailItemHeader(email: Email, modifier: Modifier = Modifier) {
+    // Fila con imagen de perfil y contenido del encabezado
     Row(modifier = modifier) {
+        // Imagen del remitente
         ReplyProfileImage(
             drawableResource = email.sender.avatar,
             description = stringResource(email.sender.firstName) + " "
                     + stringResource(email.sender.lastName),
             modifier = Modifier.size(dimensionResource(R.dimen.email_header_profile_size))
         )
+        // Información del remitente y la fecha
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -193,10 +214,12 @@ private fun ReplyEmailItemHeader(email: Email, modifier: Modifier = Modifier) {
                 ),
             verticalArrangement = Arrangement.Center
         ) {
+            // Nombre del remitente
             Text(
                 text = stringResource(email.sender.firstName),
                 style = MaterialTheme.typography.labelMedium
             )
+            // Fecha de creación del correo
             Text(
                 text = stringResource(email.createdAt),
                 style = MaterialTheme.typography.labelMedium,
@@ -212,6 +235,7 @@ fun ReplyProfileImage(
     description: String,
     modifier: Modifier = Modifier,
 ) {
+    // Caja que contiene una imagen circular del perfil
     Box(modifier = modifier) {
         Image(
             modifier = Modifier.clip(CircleShape),
@@ -226,6 +250,7 @@ fun ReplyLogo(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary
 ) {
+    // Logo de la aplicación con filtro de color
     Image(
         painter = painterResource(R.drawable.logo),
         contentDescription = stringResource(R.string.logo),
@@ -236,17 +261,20 @@ fun ReplyLogo(
 
 @Composable
 private fun ReplyHomeTopBar(modifier: Modifier = Modifier) {
+    // Barra superior con el logo a la izquierda y la imagen de perfil a la derecha
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
         ReplyLogo(
+            // Logo de la app
             modifier = Modifier
                 .size(dimensionResource(R.dimen.topbar_logo_size))
                 .padding(start = dimensionResource(R.dimen.topbar_logo_padding_start))
         )
         ReplyProfileImage(
+            // Imagen del perfil de usuario
             drawableResource = LocalAccountsDataProvider.defaultAccount.avatar,
             description = stringResource(R.string.profile),
             modifier = Modifier

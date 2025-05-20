@@ -36,29 +36,33 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.reply.ui.ReplyApp
 import com.example.reply.ui.theme.ReplyTheme
 
+// La clase principal de la actividad de la aplicación.
 class MainActivity : ComponentActivity() {
 
+    // Anotación para indicar el uso de APIs experimentales.
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // Habilita la visualización de borde a borde para que el contenido se extienda detrás de las barras del sistema.
+        super.onCreate(savedInstanceState) // Llama al metodo onCreate de la superclase para la inicialización estándar.
 
         setContent {
+            // Establece el contenido de la actividad usando Jetpack Compose.
             ReplyTheme {
-                val layoutDirection = LocalLayoutDirection.current
+                // Aplica el tema personalizado ReplyTheme a la interfaz de usuario.
+                val layoutDirection = LocalLayoutDirection.current // Obtiene la dirección de diseño actual (izquierda a derecha o derecha a izquierda).
                 Surface(
                     modifier = Modifier
-                        .padding(
-                            start = WindowInsets.safeDrawing.asPaddingValues()
+                        .padding( // Aplica padding para que el contenido no se superponga con las barras de sistema.
+                            start = WindowInsets.safeDrawing.asPaddingValues() // Calcula el padding inicial (izquierdo) desde los insets de dibujo seguros.
                                 .calculateStartPadding(layoutDirection),
-                            end = WindowInsets.safeDrawing.asPaddingValues()
+                            end = WindowInsets.safeDrawing.asPaddingValues() // Calcula el padding final (derecho) desde los insets de dibujo seguros.
                                 .calculateEndPadding(layoutDirection)
                         )
                 ) {
-                    val windowSize = calculateWindowSizeClass(this)
+                    val windowSize = calculateWindowSizeClass(this) // Calcula la clase de tamaño de la ventana actual de la actividad.
 
                     ReplyApp(
-                        windowSize = windowSize.widthSizeClass,
+                        windowSize = windowSize.widthSizeClass, // Pasa la clase de tamaño del ancho de la ventana a ReplyApp.
                     )
                 }
             }
@@ -66,37 +70,40 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = true)
+// Composable de previsualización para la aplicación Reply en un tamaño compacto.
+@Preview(showBackground = true) // Muestra un fondo en la previsualización.
 @Composable
 fun ReplyAppCompactPreview() {
-    ReplyTheme {
-        Surface {
+    ReplyTheme { // Aplica el tema de la aplicación.
+        Surface { // Envuelve el contenido en un Surface.
             ReplyApp(
-                windowSize = WindowWidthSizeClass.Compact,
+                windowSize = WindowWidthSizeClass.Compact, // Establece la clase de ancho de ventana a Compact para la previsualización.
             )
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 700)
+// Composable de previsualización para la aplicación Reply en un tamaño mediano.
+@Preview(showBackground = true, widthDp = 700) // Muestra un fondo y establece un ancho de 700dp para la previsualización.
 @Composable
 fun ReplyAppMediumPreview() {
-    ReplyTheme {
-        Surface {
+    ReplyTheme { // Aplica el tema de la aplicación.
+        Surface { // Envuelve el contenido en un Surface.
             ReplyApp(
-                windowSize = WindowWidthSizeClass.Medium,
+                windowSize = WindowWidthSizeClass.Medium, // Establece la clase de ancho de ventana a Medium para la previsualización.
             )
         }
     }
 }
 
-@Preview(showBackground = true, widthDp = 1000)
+// Composable de previsualización para la aplicación Reply en un tamaño expandido.
+@Preview(showBackground = true, widthDp = 1000) // Muestra un fondo y establece un ancho de 1000dp para la previsualización.
 @Composable
 fun ReplyAppExpandedPreview() {
-    ReplyTheme {
-        Surface {
+    ReplyTheme { // Aplica el tema de la aplicación.
+        Surface { // Envuelve el contenido en un Surface.
             ReplyApp(
-                windowSize = WindowWidthSizeClass.Expanded,
+                windowSize = WindowWidthSizeClass.Expanded, // Establece la clase de ancho de ventana a Expanded para la previsualización.
             )
         }
     }

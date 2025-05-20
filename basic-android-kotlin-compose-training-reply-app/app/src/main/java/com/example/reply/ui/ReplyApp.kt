@@ -25,50 +25,61 @@ import com.example.reply.data.MailboxType
 import com.example.reply.ui.utils.ReplyContentType
 import com.example.reply.ui.utils.ReplyNavigationType
 
+// Composable principal de la aplicación Reply.
 @Composable
 fun ReplyApp(
-    windowSize: WindowWidthSizeClass,
-    modifier: Modifier = Modifier,
+    windowSize: WindowWidthSizeClass, // La clase de tamaño del ancho de la ventana, que determina el diseño adaptable.
+    modifier: Modifier = Modifier, // Modificador opcional para aplicar al composable.
 ) {
-    val navigationType: ReplyNavigationType
-    val contentType: ReplyContentType
-    val viewModel: ReplyViewModel = viewModel()
+    val navigationType: ReplyNavigationType // Variable para almacenar el tipo de navegación.
+    val contentType: ReplyContentType // Variable para almacenar el tipo de contenido.
+    val viewModel: ReplyViewModel = viewModel() // Obtiene una instancia del ReplyViewModel.
+    // Recolecta el estado de la UI del ViewModel como un State de Compose.
     val replyUiState = viewModel.uiState.collectAsState().value
 
+    // Lógica para determinar el tipo de navegación y contenido según el tamaño de la ventana.
     when (windowSize) {
         WindowWidthSizeClass.Compact -> {
-            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
-            contentType = ReplyContentType.LIST_ONLY
+            // Para pantallas compactas (teléfonos en modo vertical).
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION // Navegación inferior.
+            contentType = ReplyContentType.LIST_ONLY // Solo muestra la lista de correos.
         }
         WindowWidthSizeClass.Medium -> {
-            navigationType = ReplyNavigationType.NAVIGATION_RAIL
-            contentType = ReplyContentType.LIST_ONLY
+            // Para pantallas medianas (tabletas pequeñas o plegables).
+            navigationType = ReplyNavigationType.NAVIGATION_RAIL // Barra de navegación lateral (rail).
+            contentType = ReplyContentType.LIST_ONLY // Solo muestra la lista de correos.
         }
         WindowWidthSizeClass.Expanded -> {
-            navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
-            contentType = ReplyContentType.LIST_AND_DETAIL
+            // Para pantallas expandidas (tabletas grandes o escritorios).
+            navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER // Cajón de navegación permanente.
+            contentType = ReplyContentType.LIST_AND_DETAIL // Muestra lista y detalles del correo.
         }
         else -> {
-            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION
-            contentType = ReplyContentType.LIST_ONLY
+            // Caso por defecto, para cualquier otro tamaño no especificado.
+            navigationType = ReplyNavigationType.BOTTOM_NAVIGATION // Navegación inferior.
+            contentType = ReplyContentType.LIST_ONLY // Solo muestra la lista de correos.
         }
     }
+    // Renderiza la pantalla principal de Reply.
     ReplyHomeScreen(
-        navigationType = navigationType,
-        contentType = contentType,
-        replyUiState = replyUiState,
+        navigationType = navigationType, // Pasa el tipo de navegación determinado.
+        contentType = contentType, // Pasa el tipo de contenido determinado.
+        replyUiState = replyUiState, // Pasa el estado actual de la UI.
         onTabPressed = { mailboxType: MailboxType ->
-            viewModel.updateCurrentMailbox(mailboxType = mailboxType)
-            viewModel.resetHomeScreenStates()
+            // Callback cuando se presiona una pestaña del buzón.
+            viewModel.updateCurrentMailbox(mailboxType = mailboxType) // Actualiza el buzón actual en el ViewModel.
+            viewModel.resetHomeScreenStates() // Restablece los estados de la pantalla de inicio.
         },
         onEmailCardPressed = { email: Email ->
+            // Callback cuando se presiona una tarjeta de correo electrónico.
             viewModel.updateDetailsScreenStates(
-                email = email
+                email = email // Actualiza los estados de la pantalla de detalles con el correo seleccionado.
             )
         },
         onDetailScreenBackPressed = {
-            viewModel.resetHomeScreenStates()
+            // Callback cuando se presiona el botón de atrás en la pantalla de detalles.
+            viewModel.resetHomeScreenStates() // Restablece los estados de la pantalla de inicio.
         },
-        modifier = modifier
+        modifier = modifier // Aplica el modificador al composable.
     )
 }
