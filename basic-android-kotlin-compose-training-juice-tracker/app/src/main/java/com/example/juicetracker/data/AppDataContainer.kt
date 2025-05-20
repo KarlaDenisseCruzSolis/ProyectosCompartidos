@@ -18,11 +18,17 @@ package com.example.juicetracker.data
 import android.content.Context
 
 /**
- * [AppContainer] implementation that provides instance of [RoomJuiceRepository]
+ * Implementación de [AppContainer] que proporciona una instancia de [RoomJuiceRepository].
  */
 class AppDataContainer(private val context: Context) : AppContainer {
     /**
-     * Implementation for [JuiceRepository]
+     * Implementación para [JuiceRepository].
+     *
+     * Utiliza 'by lazy' para inicializar el repositorio solo cuando se accede a él por primera vez.
+     * Esto asegura que la base de datos se cree de forma diferida, lo que es eficiente.
+     *
+     * Obtiene la instancia de la base de datos de la aplicación a través de AppDatabase.getDatabase(context)
+     * y luego obtiene el JuiceDao de esa base de datos para construir el RoomJuiceRepository.
      */
     override val juiceRepository: JuiceRepository by lazy {
         RoomJuiceRepository(AppDatabase.getDatabase(context).juiceDao())

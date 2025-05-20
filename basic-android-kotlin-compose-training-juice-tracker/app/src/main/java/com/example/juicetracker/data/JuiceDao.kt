@@ -23,19 +23,25 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Juice Data Access Object which contains methods to access and modify Juice table in Room DB
+ * Objeto de Acceso a Datos (DAO) para Juice, que contiene métodos para acceder y modificar la tabla Juice en la base de datos Room.
  */
 @Dao
 interface JuiceDao {
+    // Define una consulta SQL para obtener todos los registros de la tabla 'juice'.
+    // Retorna un Flow que emitirá una lista de objetos Juice cada vez que los datos cambien.
     @Query("SELECT * FROM juice")
     fun getAll(): Flow<List<Juice>>
 
+    // Anota la función para insertar un nuevo objeto Juice en la base de datos.
+    // 'suspend' indica que esta es una función de suspensión y debe llamarse desde una coroutine.
     @Insert
     suspend fun insert(juice: Juice)
 
+    // Anota la función para eliminar un objeto Juice existente de la base de datos.
     @Delete
     suspend fun delete(juice: Juice)
 
+    // Anota la función para actualizar un objeto Juice existente en la base de datos.
     @Update
     suspend fun update(juice: Juice)
 }

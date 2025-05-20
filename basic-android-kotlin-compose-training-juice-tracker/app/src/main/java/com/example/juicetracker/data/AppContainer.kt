@@ -16,8 +16,15 @@
 package com.example.juicetracker.data
 
 /**
- * App container for Dependency injection.
+ * Contenedor de la aplicación para la inyección de dependencias.
+ *
+ * Esta interfaz define las dependencias que la aplicación necesita para funcionar,
+ * en este caso, el repositorio de jugos. Al usar una interfaz, se promueve
+ * la inversión de control y facilita las pruebas y la modularidad del código.
  */
 interface AppContainer {
+    // Propiedad que proporciona una instancia de JuiceRepository.
+    // Las clases que implementen esta interfaz serán responsables de proporcionar
+    // una implementación concreta de JuiceRepository.
     val juiceRepository: JuiceRepository
 }

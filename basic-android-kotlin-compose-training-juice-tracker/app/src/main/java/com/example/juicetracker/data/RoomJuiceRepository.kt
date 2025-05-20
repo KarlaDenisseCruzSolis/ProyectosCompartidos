@@ -18,13 +18,21 @@ package com.example.juicetracker.data
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Implementation of [JuiceRepository] interface
- * which allow access and modification of Juice items through [JuiceDao]
+ * Implementación de la interfaz [JuiceRepository]
+ * que permite el acceso y la modificación de los ítems de Juice a través de [JuiceDao].
  */
 class RoomJuiceRepository(private val juiceDao: JuiceDao) : JuiceRepository {
+    // Declara una propiedad de flujo que emite una lista de objetos Juice.
+    // Obtiene todos los ítems de Juice de la base de datos a través de juiceDao.
     override val juiceStream: Flow<List<Juice>> = juiceDao.getAll()
 
+    // Implementa la función para agregar un nuevo ítem de Juice a la base de datos.
+    // La palabra clave 'suspend' indica que es una función de suspensión que puede ser pausada y reanudada.
     override suspend fun addJuice(juice: Juice) = juiceDao.insert(juice)
+
+    // Implementa la función para eliminar un ítem de Juice de la base de datos.
     override suspend fun deleteJuice(juice: Juice) = juiceDao.delete(juice)
+
+    // Implementa la función para actualizar un ítem de Juice existente en la base de datos.
     override suspend fun updateJuice(juice: Juice) = juiceDao.update(juice)
 }

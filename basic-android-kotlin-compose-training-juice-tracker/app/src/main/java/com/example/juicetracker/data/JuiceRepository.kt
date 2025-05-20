@@ -18,11 +18,20 @@ package com.example.juicetracker.data
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Interface for [JuiceRepository] which contains method to access and modify juice items
+ * Interfaz para [JuiceRepository] que contiene métodos para acceder y modificar ítems de jugo.
  */
 interface JuiceRepository {
+    // Declara una propiedad de flujo que emitirá una lista de objetos Juice.
+    // Esto permite observar los cambios en la lista de jugos de forma asíncrona.
     val juiceStream: Flow<List<Juice>>
+
+    // Función suspendida para agregar un nuevo objeto Juice a la fuente de datos.
+    // 'suspend' indica que esta función puede pausarse y reanudarse en un coroutine.
     suspend fun addJuice(juice: Juice)
+
+    // Función suspendida para eliminar un objeto Juice de la fuente de datos.
     suspend fun deleteJuice(juice: Juice)
+
+    // Función suspendida para actualizar un objeto Juice existente en la fuente de datos.
     suspend fun updateJuice(juice: Juice)
 }
