@@ -25,17 +25,20 @@ import androidx.compose.ui.Modifier
 import com.example.racetracker.ui.RaceTrackerApp
 import com.example.racetracker.ui.theme.RaceTrackerTheme
 
+// MainActivity es el punto de entrada de la aplicación Android.
 class MainActivity : ComponentActivity() {
+    // onCreate se llama cuando la actividad se crea por primera vez.
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // Habilita la visualización de borde a borde para la actividad.
+        super.onCreate(savedInstanceState) // Llama al metodo onCreate de la superclase.
         setContent {
+            // Establece el contenido de la actividad usando Jetpack Compose.
             RaceTrackerTheme {
-                // A surf4ace container using the 'background' color from the theme
+                // Un contenedor Surface que usa el color 'background' del tema.
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(), // Hace que el Surface ocupe toda la pantalla.
                 ) {
-                    RaceTrackerApp()
+                    RaceTrackerApp() // Renderiza el composable principal de la aplicación RaceTracker.
                 }
             }
         }

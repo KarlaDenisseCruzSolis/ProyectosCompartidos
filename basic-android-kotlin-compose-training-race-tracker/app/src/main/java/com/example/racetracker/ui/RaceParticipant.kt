@@ -21,49 +21,56 @@ import androidx.compose.runtime.setValue
 import kotlinx.coroutines.delay
 
 /**
- * This class represents a state holder for race participant.
+ * Esta clase representa un contenedor de estado para un participante de la carrera.
  */
 class RaceParticipant(
-    val name: String,
-    val maxProgress: Int = 100,
-    val progressDelayMillis: Long = 500L,
-    private val progressIncrement: Int = 1,
-    private val initialProgress: Int = 0
+    val name: String, // El nombre del participante.
+    val maxProgress: Int = 100, // El progreso máximo que el participante puede alcanzar.
+    val progressDelayMillis: Long = 500L, // El retraso en milisegundos entre cada incremento de progreso.
+    private val progressIncrement: Int = 1, // La cantidad en la que el progreso se incrementa en cada paso.
+    private val initialProgress: Int = 0 // El progreso inicial del participante.
 ) {
+    // Bloque init para realizar validaciones al inicializar la clase.
     init {
+        // Requiere que maxProgress sea mayor que 0. Lanza un IllegalArgumentException si no lo es.
         require(maxProgress > 0) { "maxProgress=$maxProgress; must be > 0" }
+        // Requiere que progressIncrement sea mayor que 0. Lanza un IllegalArgumentException si no lo es.
         require(progressIncrement > 0) { "progressIncrement=$progressIncrement; must be > 0" }
     }
 
     /**
-     * Indicates the race participant's current progress
+     * Indica el progreso actual del participante de la carrera.
+     * La propiedad 'private set' significa que solo puede ser modificada dentro de esta clase.
      */
     var currentProgress by mutableStateOf(initialProgress)
         private set
 
     /**
-     * Updates the value of [currentProgress] by value [progressIncrement] until it reaches
-     * [maxProgress]. There is a delay of [progressDelayMillis] between each update.
+     * Actualiza el valor de [currentProgress] en [progressIncrement] hasta que alcanza [maxProgress].
+     * Hay un retraso de [progressDelayMillis] entre cada actualización.
+     * Es una función suspendida, lo que significa que puede pausarse y reanudarse en una corrutina.
      */
     suspend fun run() {
+        // Bucle que continúa mientras el progreso actual sea menor que el progreso máximo.
         while (currentProgress < maxProgress) {
-            delay(progressDelayMillis)
-            currentProgress += progressIncrement
+            delay(progressDelayMillis) // Pausa la corrutina por el tiempo especificado.
+            currentProgress += progressIncrement // Incrementa el progreso.
         }
     }
 
     /**
-     * Regardless of the value of [initialProgress] the reset function will reset the
-     * [currentProgress] to 0
+     * Independientemente del valor de [initialProgress], la función de reinicio establecerá
+     * [currentProgress] en 0.
      */
     fun reset() {
-        currentProgress = 0
+        currentProgress = 0 // Establece el progreso actual a 0.
     }
 }
 
 /**
- * The Linear progress indicator expects progress value in the range of 0-1. This property
- * calculate the progress factor to satisfy the indicator requirements.
+ * El indicador de progreso lineal espera un valor de progreso en el rango de 0-1. Esta propiedad
+ * calcula el factor de progreso para satisfacer los requisitos del indicador.
+ * Es una propiedad de extensión de la clase RaceParticipant.
  */
 val RaceParticipant.progressFactor: Float
-    get() = currentProgress / maxProgress.toFloat()
+    get() = currentProgress / maxProgress.toFloat() // Calcula el progreso como un valor flotante entre 0 y 1.
