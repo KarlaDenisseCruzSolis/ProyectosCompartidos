@@ -16,7 +16,21 @@
 package com.example.unscramble.ui
 
 /**
- * Data class that represents the game UI state
+ * Clase de datos que representa el estado de la interfaz de usuario del juego.
+ *
+ * Esta clase contiene todos los datos necesarios para renderizar la UI del juego en un momento dado.
+ *
+ * @param currentScrambledWord La palabra actual que está revuelta y que el usuario debe adivinar.
+ * Se inicializa como una cadena vacía.
+ * @param currentWordCount El número de palabras que el usuario ha intentado adivinar hasta el momento.
+ * Se inicializa en 1.
+ * @param score La puntuación actual del jugador.
+ * Se inicializa en 0.
+ * @param isGuessedWordWrong Un booleano que indica si la última palabra adivinada por el usuario fue incorrecta.
+ * Esto se usa para mostrar retroalimentación visual al usuario.
+ * Se inicializa en `false`.
+ * @param isGameOver Un booleano que indica si el juego ha terminado.
+ * Se inicializa en `false`.
  */
 data class GameUiState(
     val currentScrambledWord: String = "",

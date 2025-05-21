@@ -16,10 +16,23 @@
 
 package com.example.unscramble.data
 
+/**
+ * Constante que define el número máximo de palabras en el juego.
+ * Una vez que se alcanza este número de palabras, el juego termina.
+ */
 const val MAX_NO_OF_WORDS = 10
+
+/**
+ * Constante que define el aumento de puntuación por cada palabra correcta.
+ * Cada vez que el usuario adivina una palabra correctamente, su puntuación aumenta en este valor.
+ */
 const val SCORE_INCREASE = 20
 
-// Set with all the words for the Game
+/**
+ * Conjunto inmutable de todas las palabras disponibles para el juego Unscramble.
+ * Este conjunto contiene las palabras que se desordenarán para que el usuario las adivine.
+ * Se usa un `Set` para garantizar que no haya palabras duplicadas y para búsquedas eficientes.
+ */
 val allWords: Set<String> =
     setOf(
         "animal",

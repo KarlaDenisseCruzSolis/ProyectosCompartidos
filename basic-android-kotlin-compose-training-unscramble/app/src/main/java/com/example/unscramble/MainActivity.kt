@@ -26,15 +26,33 @@ import androidx.compose.ui.Modifier
 import com.example.unscramble.ui.GameScreen
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
+/**
+ * MainActivity es la actividad principal de la aplicación Unscramble.
+ * Es el punto de entrada de la aplicación y gestiona la configuración inicial de la interfaz de usuario.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * Llamado cuando la actividad se crea por primera vez.
+     * Aquí se configura la interfaz de usuario de la aplicación.
+     *
+     * @param savedInstanceState Si la actividad está siendo re-inicializada después de haber sido
+     * previamente cerrada, este Bundle contiene los datos que suministró más recientemente en
+     * [onSaveInstanceState]. De lo contrario, es nulo.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Habilita el modo de pantalla completa para que el contenido se extienda hasta los bordes del dispositivo.
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        // Establece el contenido de la interfaz de usuario de la actividad utilizando Jetpack Compose.
         setContent {
+            // Aplica el tema definido para la aplicación Unscramble.
             UnscrambleTheme {
+                // Una superficie que ocupa todo el tamaño disponible.
+                // Sirve como el contenedor principal para el contenido de la interfaz de usuario.
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize(), // El modificador fillMaxSize() hace que la superficie ocupe todo el espacio disponible.
                 ) {
+                    // Llama a la función componible GameScreen, que contiene el diseño y la lógica del juego.
                     GameScreen()
                 }
             }
