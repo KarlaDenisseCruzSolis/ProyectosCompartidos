@@ -13,154 +13,141 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.marsphotos.ui.screens
+package com.example.marsphotos.ui.screens // Declara el paquete en el que se encuentra este archivo
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.marsphotos.R
-import com.example.marsphotos.model.MarsPhoto
-import com.example.marsphotos.ui.theme.MarsPhotosTheme
+// Importa componentes y funciones necesarios para la UI y el sistema de imágenes
+import androidx.compose.foundation.Image // Permite mostrar imágenes estáticas
+import androidx.compose.foundation.layout.* // Importa varios layouts (Column, Row, etc.)
+import androidx.compose.foundation.lazy.grid.* // Importa el grid perezoso (LazyVerticalGrid)
+import androidx.compose.material3.* // Importa componentes de Material 3 (Button, Text, Card, etc.)
+import androidx.compose.runtime.Composable // Marca funciones como composables para Jetpack Compose
+import androidx.compose.ui.Alignment // Permite alinear elementos dentro de los layouts
+import androidx.compose.ui.Modifier // Se usa para modificar apariencia y comportamiento de composables
+import androidx.compose.ui.layout.ContentScale // Controla cómo se escala la imagen dentro del contenedor
+import androidx.compose.ui.platform.LocalContext // Accede al contexto actual (requerido para cargar imágenes con Coil)
+import androidx.compose.ui.res.painterResource // Carga imágenes desde los recursos
+import androidx.compose.ui.res.stringResource // Carga cadenas desde archivos de recursos (strings.xml)
+import androidx.compose.ui.tooling.preview.Preview // Permite previsualizar composables en tiempo de diseño
+import androidx.compose.ui.unit.dp // Define dimensiones como padding, tamaño, etc., en dp (density pixels)
+import coil.compose.AsyncImage // Composable de Coil para cargar imágenes desde internet
+import coil.request.ImageRequest // Permite construir una petición de imagen con opciones como crossfade
+import com.example.marsphotos.R // Accede a los recursos del proyecto (imágenes, strings, etc.)
+import com.example.marsphotos.model.MarsPhoto // Importa el modelo de datos MarsPhoto
+import com.example.marsphotos.ui.theme.MarsPhotosTheme // Importa el tema personalizado de la app
 
+// Composable principal que representa la pantalla de inicio
 @Composable
 fun HomeScreen(
-    marsUiState: MarsUiState,
-    retryAction: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    marsUiState: MarsUiState, // Estado actual de la UI (cargando, éxito, error)
+    retryAction: () -> Unit, // Función que se llama cuando se presiona el botón de reintento
+    modifier: Modifier = Modifier, // Modificador opcional para personalizar el diseño
+    contentPadding: PaddingValues = PaddingValues(0.dp), // Espaciado interno opcional
 ) {
-    when (marsUiState) {
-        is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize())
-        is MarsUiState.Success -> PhotosGridScreen(
+    when (marsUiState) { // Según el estado de la UI se muestra una pantalla distinta
+        is MarsUiState.Loading -> LoadingScreen(modifier = modifier.fillMaxSize()) // Muestra pantalla de carga
+        is MarsUiState.Success -> PhotosGridScreen( // Muestra la cuadrícula de fotos si hubo éxito
             marsUiState.photos, contentPadding = contentPadding, modifier = modifier.fillMaxWidth()
         )
-        is MarsUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize())
+        is MarsUiState.Error -> ErrorScreen(retryAction, modifier = modifier.fillMaxSize()) // Muestra pantalla de error
     }
 }
 
-/**
- * The home screen displaying the loading message.
- */
+// Composable que muestra una imagen de carga
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = stringResource(R.string.loading)
+        modifier = modifier.size(200.dp), // Tamaño de la imagen
+        painter = painterResource(R.drawable.loading_img), // Imagen de recurso usada mientras carga
+        contentDescription = stringResource(R.string.loading) // Descripción accesible para lectores de pantalla
     )
 }
 
-/**
- * The home screen displaying error message with re-attempt button.
- */
+// Composable que muestra un mensaje de error con un botón para reintentar
 @Composable
 fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = modifier, // Modificador recibido
+        verticalArrangement = Arrangement.Center, // Centra verticalmente
+        horizontalAlignment = Alignment.CenterHorizontally // Centra horizontalmente
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = "" // Imagen de error
         )
-        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
+        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp)) // Mensaje de error
+        Button(onClick = retryAction) { // Botón para reintentar
+            Text(stringResource(R.string.retry)) // Texto del botón
         }
     }
 }
 
-/**
- * The home screen displaying photo grid.
- */
+// Composable que muestra la cuadrícula de fotos de Marte
 @Composable
 fun PhotosGridScreen(
-    photos: List<MarsPhoto>,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    photos: List<MarsPhoto>, // Lista de fotos a mostrar
+    modifier: Modifier = Modifier, // Modificador para diseño
+    contentPadding: PaddingValues = PaddingValues(0.dp), // Padding para el contenido
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(150.dp),
-        modifier = modifier.padding(horizontal = 4.dp),
-        contentPadding = contentPadding,
+        columns = GridCells.Adaptive(150.dp), // Distribuye columnas adaptándose al ancho disponible
+        modifier = modifier.padding(horizontal = 4.dp), // Agrega un pequeño padding horizontal
+        contentPadding = contentPadding, // Usa el padding recibido
     ) {
-        items(items = photos, key = { photo -> photo.id }) { photo ->
-            MarsPhotoCard(
+        items(items = photos, key = { photo -> photo.id }) { photo -> // Itera sobre cada foto y asigna una key por id
+            MarsPhotoCard( // Muestra cada foto en una tarjeta
                 photo,
                 modifier = Modifier
-                    .padding(4.dp)
-                    .fillMaxWidth()
-                    .aspectRatio(1.5f)
+                    .padding(4.dp) // Espaciado entre tarjetas
+                    .fillMaxWidth() // Ocupa todo el ancho disponible
+                    .aspectRatio(1.5f) // Proporción de aspecto de la tarjeta (ancho:alto)
             )
         }
     }
 }
 
+// Composable que representa una tarjeta con una imagen de Marte
 @Composable
 fun MarsPhotoCard(photo: MarsPhoto, modifier: Modifier = Modifier) {
     Card(
-        modifier = modifier,
-        shape = MaterialTheme.shapes.medium,
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        modifier = modifier, // Modificador recibido
+        shape = MaterialTheme.shapes.medium, // Forma con esquinas redondeadas según el tema
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp) // Elevación de la tarjeta (sombra)
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc)
-                .crossfade(true).build(),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.mars_photo),
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth()
+        AsyncImage( // Imagen cargada desde internet usando Coil
+            model = ImageRequest.Builder(context = LocalContext.current).data(photo.imgSrc) // Construye la petición con la URL de la foto
+                .crossfade(true).build(), // Aplica transición con fundido
+            error = painterResource(R.drawable.ic_broken_image), // Imagen mostrada si falla la carga
+            placeholder = painterResource(R.drawable.loading_img), // Imagen temporal mientras carga
+            contentDescription = stringResource(R.string.mars_photo), // Descripción accesible
+            contentScale = ContentScale.Crop, // Recorta la imagen para llenar el contenedor
+            modifier = Modifier.fillMaxWidth() // La imagen ocupa todo el ancho
         )
     }
 }
 
+// Vista previa del composable LoadingScreen
 @Preview(showBackground = true)
 @Composable
 fun LoadingScreenPreview() {
-    MarsPhotosTheme {
-        LoadingScreen()
+    MarsPhotosTheme { // Aplica el tema de la app
+        LoadingScreen() // Muestra la pantalla de carga
     }
 }
 
+// Vista previa del composable ErrorScreen
 @Preview(showBackground = true)
 @Composable
 fun ErrorScreenPreview() {
     MarsPhotosTheme {
-        ErrorScreen({})
+        ErrorScreen({}) // Muestra la pantalla de error con una función vacía como retryAction
     }
 }
 
+// Vista previa del composable PhotosGridScreen con datos de prueba
 @Preview(showBackground = true)
 @Composable
 fun PhotosGridScreenPreview() {
     MarsPhotosTheme {
-        val mockData = List(10) { MarsPhoto("$it", "") }
-        PhotosGridScreen(mockData)
+        val mockData = List(10) { MarsPhoto("$it", "") } // Crea una lista simulada de 10 fotos con ids del 0 al 9
+        PhotosGridScreen(mockData) // Muestra la cuadrícula de fotos con los datos simulados
     }
 }
