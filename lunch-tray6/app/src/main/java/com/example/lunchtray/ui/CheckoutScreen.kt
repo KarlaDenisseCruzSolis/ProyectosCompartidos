@@ -39,6 +39,15 @@ import com.example.lunchtray.datasource.DataSource
 import com.example.lunchtray.model.MenuItem
 import com.example.lunchtray.model.OrderUiState
 
+/**
+ * Composable que representa la pantalla de resumen del pedido.
+ * Muestra un resumen de los elementos seleccionados, el subtotal, el impuesto y el total final.
+ *
+ * @param orderUiState El estado actual de la UI del pedido, que contiene los elementos seleccionados y los precios.
+ * @param onNextButtonClicked La acción a realizar cuando se hace clic en el botón "Enviar pedido".
+ * @param onCancelButtonClicked La acción a realizar cuando se hace clic en el botón "Cancelar".
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 fun CheckoutScreen(
     orderUiState: OrderUiState,
@@ -46,51 +55,55 @@ fun CheckoutScreen(
     onCancelButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Column(// Columna principal que organiza los elementos del resumen del pedido.
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
     ) {
-        Text(
+        Text(// Título "Resumen del pedido".
             text = stringResource(R.string.order_summary),
             fontWeight = FontWeight.Bold
         )
+        // Muestra el resumen del plato principal, si está seleccionado.
         ItemSummary(item = orderUiState.entree, modifier = Modifier.fillMaxWidth())
+        // Muestra el resumen de la guarnición, si está seleccionada.
         ItemSummary(item = orderUiState.sideDish, modifier = Modifier.fillMaxWidth())
+        // Muestra el resumen del aderezo, si está seleccionado.
         ItemSummary(item = orderUiState.accompaniment, modifier = Modifier.fillMaxWidth())
 
-        Divider(
+        Divider(// Divisor visual para separar los elementos del resumen de los costos.
             thickness = dimensionResource(R.dimen.thickness_divider),
             modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_small))
         )
 
-        OrderSubCost(
-            resourceId = R.string.subtotal,
-            price = orderUiState.itemTotalPrice.formatPrice(),
-            Modifier.align(Alignment.End)
+        OrderSubCost(// Muestra el subtotal del pedido.
+            resourceId = R.string.subtotal,// ID del recurso de cadena para "Subtotal".
+            price = orderUiState.itemTotalPrice.formatPrice(),// Precio del subtotal formateado.
+            Modifier.align(Alignment.End)// Alinea el texto al final (derecha).
         )
 
-        OrderSubCost(
-            resourceId = R.string.tax,
-            price = orderUiState.orderTax.formatPrice(),
-            Modifier.align(Alignment.End)
+        OrderSubCost(// Muestra el impuesto del pedido.
+            resourceId = R.string.tax,// ID del recurso de cadena para "Impuesto".
+            price = orderUiState.orderTax.formatPrice(),// Precio del impuesto formateado.
+            Modifier.align(Alignment.End)// Alinea el texto al final (derecha).
         )
 
-        Text(
-            text = stringResource(R.string.total, orderUiState.orderTotalPrice.formatPrice()),
+        Text(// Muestra el precio total del pedido.
+            text = stringResource(R.string.total, orderUiState.orderTotalPrice.formatPrice()), // Texto del total con el precio formateado.
             modifier = Modifier.align(Alignment.End),
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold// Texto en negrita.
         )
 
-        Row(
+        Row(// Fila que contiene los botones "Cancelar" y "Enviar pedido".
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(R.dimen.padding_medium)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium))// Espacio entre los botones.
         ){
+            // Botón con contorno para "Cancelar".
             OutlinedButton(modifier = Modifier.weight(1f), onClick = onCancelButtonClicked) {
                 Text(stringResource(R.string.cancel).uppercase())
             }
-            Button(
+            Button(// Botón sólido para "Enviar pedido".
                 modifier = Modifier.weight(1f),
                 onClick = onNextButtonClicked
             ) {
@@ -100,48 +113,67 @@ fun CheckoutScreen(
     }
 }
 
+/**
+ * Composable que muestra un resumen de un elemento del menú (nombre y precio).
+ *
+ * @param item El [MenuItem] a resumir. Puede ser nulo si no se ha seleccionado ningún elemento.
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 fun ItemSummary(
     item: MenuItem?,
     modifier: Modifier = Modifier
 ) {
-    Row(
+    Row(// Fila que muestra el nombre y el precio del elemento.
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // Muestra el nombre del elemento o una cadena vacía si el elemento es nulo.
         Text(item?.name ?: "")
+        // Muestra el precio formateado del elemento o una cadena vacía si el elemento es nulo.
         Text(item?.getFormattedPrice() ?: "")
     }
 }
 
+/**
+ * Composable que muestra un costo secundario del pedido (como subtotal o impuesto).
+ *
+ * @param resourceId El ID del recurso de cadena para la etiqueta del costo (ej. R.string.subtotal).
+ * @param price La cadena que representa el precio formateado.
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 fun OrderSubCost(
     @StringRes resourceId: Int,
     price: String,
     modifier: Modifier = Modifier
 ) {
-    Text(
+    Text(// Texto que muestra la etiqueta del costo y su valor.
         text = stringResource(resourceId, price),
         modifier = modifier
     )
 }
 
+/**
+ * Vista previa del `CheckoutScreen` en el panel de diseño.
+ * Muestra cómo se verá la pantalla de resumen del pedido con datos de ejemplo.
+ */
 @Preview
 @Composable
 fun CheckoutScreenPreview() {
     CheckoutScreen(
         orderUiState = OrderUiState(
-            entree = DataSource.entreeMenuItems[0],
-            sideDish = DataSource.sideDishMenuItems[0],
-            accompaniment = DataSource.accompanimentMenuItems[0],
-            itemTotalPrice = 15.00,
-            orderTax = 1.00,
-            orderTotalPrice = 16.00
+            entree = DataSource.entreeMenuItems[0],// Primer plato principal como ejemplo.
+            sideDish = DataSource.sideDishMenuItems[0],// Primera guarnición como ejemplo.
+            accompaniment = DataSource.accompanimentMenuItems[0],// Primer aderezo como ejemplo.
+            itemTotalPrice = 15.00,// Precio total de los ítems de ejemplo.
+            orderTax = 1.00, // Impuesto de ejemplo.
+            orderTotalPrice = 16.00// Precio total de ejemplo.
         ),
         onNextButtonClicked = {},
         onCancelButtonClicked = {},
         modifier = Modifier
             .padding(dimensionResource(R.dimen.padding_medium))
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(rememberScrollState())// Permite el desplazamiento vertical para simular contenido completo.
     )
 }

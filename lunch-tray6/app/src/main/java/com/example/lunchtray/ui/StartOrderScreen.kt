@@ -31,30 +31,44 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.lunchtray.R
 
+/**
+ * Composable que representa la pantalla de inicio para comenzar un nuevo pedido.
+ * Contiene un botón centralizado para iniciar el proceso de pedido.
+ *
+ * @param onStartOrderButtonClicked La acción a realizar cuando se hace clic en el botón "Start Order".
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 fun StartOrderScreen(
     onStartOrderButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Columna que centra su contenido horizontal y verticalmente.
     Column(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        horizontalAlignment = Alignment.CenterHorizontally, // Alinea el contenido horizontalmente al centro.
+        verticalArrangement = Arrangement.Center // Alinea el contenido verticalmente al centro.
     ) {
+        // Botón para iniciar el pedido.
         Button(
-            onClick = onStartOrderButtonClicked,
-            Modifier.widthIn(min = 250.dp)
+            onClick = onStartOrderButtonClicked, // La acción a realizar al hacer clic en el botón.
+            Modifier.widthIn(min = 250.dp) // Establece un ancho mínimo para el botón.
         ) {
-            Text(stringResource(R.string.start_order))
+            Text(stringResource(R.string.start_order)) // Texto del botón, obtenido de los recursos de cadena.
         }
     }
 }
 
+/**
+ * Vista previa del `StartOrderScreen` en el panel de diseño.
+ * Permite visualizar cómo se verá la pantalla de inicio.
+ */
 @Preview
 @Composable
 fun StartOrderPreview(){
+    // Instancia de StartOrderScreen para la vista previa.
     StartOrderScreen(
-        onStartOrderButtonClicked = {},
+        onStartOrderButtonClicked = {},// Define una acción vacía para el botón en la vista previa.
         modifier = Modifier
             .padding(dimensionResource(R.dimen.padding_medium))
             .fillMaxSize()
