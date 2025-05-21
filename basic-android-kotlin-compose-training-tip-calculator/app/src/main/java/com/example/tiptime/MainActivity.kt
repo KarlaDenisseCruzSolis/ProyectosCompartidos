@@ -57,15 +57,29 @@ import androidx.compose.ui.unit.dp
 import com.example.tiptime.ui.theme.TipTimeTheme
 import java.text.NumberFormat
 
+
+/**
+ * La actividad principal de la aplicación TipTime.
+ * Hereda de ComponentActivity, que es la clase base para actividades que usan Jetpack Compose.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * Llamado cuando la actividad se crea por primera vez.
+     * Aquí es donde se configuran los elementos de la interfaz de usuario.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Habilita el modo de pantalla completa para que el contenido se extienda hasta los bordes.
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        // Establece el contenido de la interfaz de usuario de la actividad utilizando Jetpack Compose.
         setContent {
+            // Aplica el tema definido para la aplicación TipTime.
             TipTimeTheme {
+                // Una superficie que ocupa todo el tamaño disponible, sirviendo como contenedor principal.
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
+                    // La función componible principal que define el diseño de la aplicación.
                     TipTimeLayout()
                 }
             }
@@ -73,66 +87,91 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Composable que define el diseño principal de la aplicación para calcular propinas.
+ */
 @Composable
 fun TipTimeLayout() {
+    // Estado mutable para el monto de la cuenta, inicializado como una cadena vacía.
     var amountInput by remember { mutableStateOf("") }
+    // Estado mutable para el porcentaje de propina, inicializado como una cadena vacía.
     var tipInput by remember { mutableStateOf("") }
+    // Estado mutable para la opción de redondear la propina, inicializado en falso.
     var roundUp by remember { mutableStateOf(false) }
 
+    // Convierte el monto de entrada a Double, o 0.0 si la entrada no es un número válido.
     val amount = amountInput.toDoubleOrNull() ?: 0.0
+    // Convierte el porcentaje de propina de entrada a Double, o 0.0 si la entrada no es un número válido.
     val tipPercent = tipInput.toDoubleOrNull() ?: 0.0
+    // Calcula el monto de la propina usando la función calculateTip.
     val tip = calculateTip(amount, tipPercent, roundUp)
 
+    // Columna principal que organiza los elementos de la interfaz de usuario verticalmente.
     Column(
         modifier = Modifier
-            .statusBarsPadding()
-            .padding(horizontal = 40.dp)
-            .verticalScroll(rememberScrollState())
-            .safeDrawingPadding(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .statusBarsPadding() // Añade padding para evitar la barra de estado.
+            .padding(horizontal = 40.dp) // Padding horizontal.
+            .verticalScroll(rememberScrollState()) // Permite el desplazamiento vertical si el contenido excede la pantalla.
+            .safeDrawingPadding(), // Añade padding para evitar áreas de dibujo inseguras (como muescas).
+        horizontalAlignment = Alignment.CenterHorizontally, // Centra los elementos horizontalmente.
+        verticalArrangement = Arrangement.Center // Centra los elementos verticalmente.
     ) {
+        // Texto del título de la aplicación.
         Text(
-            text = stringResource(R.string.calculate_tip),
+            text = stringResource(R.string.calculate_tip), // Obtiene el texto del recurso de cadena.
             modifier = Modifier
-                .padding(bottom = 16.dp, top = 40.dp)
-                .align(alignment = Alignment.Start)
+                .padding(bottom = 16.dp, top = 40.dp) // Padding inferior y superior.
+                .align(alignment = Alignment.Start) // Alinea el texto al inicio (izquierda).
         )
+        // Campo de texto para ingresar el monto de la cuenta.
         EditNumberField(
-            label = R.string.bill_amount,
-            leadingIcon = R.drawable.money,
+            label = R.string.bill_amount, // Etiqueta del campo.
+            leadingIcon = R.drawable.money, // Icono principal del campo.
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
+                keyboardType = KeyboardType.Number, // Tipo de teclado numérico.
+                imeAction = ImeAction.Next // Acción del teclado para pasar al siguiente campo.
             ),
-            value = amountInput,
-            onValueChanged = { amountInput = it },
-            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
+            value = amountInput, // Valor actual del campo.
+            onValueChanged = { amountInput = it }, // Callback cuando el valor cambia.
+            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(), // Padding inferior y ancho completo.
         )
+        // Campo de texto para ingresar el porcentaje de propina.
         EditNumberField(
-            label = R.string.how_was_the_service,
-            leadingIcon = R.drawable.percent,
+            label = R.string.how_was_the_service, // Etiqueta del campo.
+            leadingIcon = R.drawable.percent, // Icono principal del campo.
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
+                keyboardType = KeyboardType.Number, // Tipo de teclado numérico.
+                imeAction = ImeAction.Done // Acción del teclado para finalizar.
             ),
-            value = tipInput,
-            onValueChanged = { tipInput = it },
-            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(),
+            value = tipInput, // Valor actual del campo.
+            onValueChanged = { tipInput = it }, // Callback cuando el valor cambia.
+            modifier = Modifier.padding(bottom = 32.dp).fillMaxWidth(), // Padding inferior y ancho completo.
         )
+        // Fila para la opción de redondear la propina.
         RoundTheTipRow(
-            roundUp = roundUp,
-            onRoundUpChanged = { roundUp = it },
-            modifier = Modifier.padding(bottom = 32.dp)
+            roundUp = roundUp, // Estado actual del interruptor.
+            onRoundUpChanged = { roundUp = it }, // Callback cuando el estado del interruptor cambia.
+            modifier = Modifier.padding(bottom = 32.dp) // Padding inferior.
         )
+        // Texto que muestra el monto de la propina calculada.
         Text(
-            text = stringResource(R.string.tip_amount, tip),
-            style = MaterialTheme.typography.displaySmall
+            text = stringResource(R.string.tip_amount, tip), // Obtiene el texto del recurso de cadena y formatea la propina.
+            style = MaterialTheme.typography.displaySmall // Aplica un estilo de tipografía.
         )
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(150.dp)) // Espaciador al final de la columna.
     }
 }
 
+/**
+ * Composable para un campo de entrada de texto numérico.
+ *
+ * @param label El ID del recurso de cadena para la etiqueta del campo de texto.
+ * @param leadingIcon El ID del recurso drawable para el ícono principal.
+ * @param keyboardOptions Las opciones del teclado para el campo de texto.
+ * @param value El valor actual del campo de texto.
+ * @param onValueChanged El callback que se invoca cuando el valor del campo de texto cambia.
+ * @param modifier Un modificador para aplicar a este componible.
+ */
 @Composable
 fun EditNumberField(
     @StringRes label: Int,
@@ -142,55 +181,73 @@ fun EditNumberField(
     onValueChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Campo de texto de Material Design.
     TextField(
-        value = value,
-        singleLine = true,
-        leadingIcon = { Icon(painter = painterResource(id = leadingIcon), null) },
-        modifier = modifier,
-        onValueChange = onValueChanged,
-        label = { Text(stringResource(label)) },
-        keyboardOptions = keyboardOptions
+        value = value, // El valor actual del campo de texto.
+        singleLine = true, // Permite que el texto se muestre en una sola línea.
+        leadingIcon = { Icon(painter = painterResource(id = leadingIcon), null) }, // Icono al inicio del campo.
+        modifier = modifier, // Modificador aplicado al campo de texto.
+        onValueChange = onValueChanged, // Callback para manejar cambios en el texto.
+        label = { Text(stringResource(label)) }, // Etiqueta del campo de texto.
+        keyboardOptions = keyboardOptions // Opciones del teclado.
     )
 }
 
+/**
+ * Composable que muestra una fila con un texto y un interruptor para redondear la propina.
+ *
+ * @param roundUp El estado actual del interruptor (redondear o no).
+ * @param onRoundUpChanged El callback que se invoca cuando el estado del interruptor cambia.
+ * @param modifier Un modificador para aplicar a este componible.
+ */
 @Composable
 fun RoundTheTipRow(
     roundUp: Boolean,
     onRoundUpChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Fila que contiene el texto y el interruptor.
     Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.fillMaxWidth(), // La fila ocupa todo el ancho disponible.
+        verticalAlignment = Alignment.CenterVertically // Alinea los elementos verticalmente al centro.
     ) {
-        Text(text = stringResource(R.string.round_up_tip))
+        Text(text = stringResource(R.string.round_up_tip)) // Texto para la opción de redondear.
         Switch(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentWidth(Alignment.End),
-            checked = roundUp,
-            onCheckedChange = onRoundUpChanged
+                .fillMaxWidth() // El interruptor intenta ocupar todo el ancho restante.
+                .wrapContentWidth(Alignment.End), // Se alinea a la derecha dentro de su espacio.
+            checked = roundUp, // Estado actual del interruptor.
+            onCheckedChange = onRoundUpChanged // Callback para cuando el interruptor cambia de estado.
         )
     }
 }
 
 /**
- * Calculates the tip based on the user input and format the tip amount
- * according to the local currency.
- * Example would be "$10.00".
+ * Calcula la propina basándose en la entrada del usuario y formatea el monto de la propina
+ * según la moneda local.
+ * Por ejemplo, el resultado sería "$10.00".
+ *
+ * @param amount El monto total de la cuenta.
+ * @param tipPercent El porcentaje de propina a aplicar (por defecto 15.0).
+ * @param roundUp Un booleano que indica si la propina debe redondearse al número entero más cercano.
+ * @return La propina calculada como una cadena formateada.
  */
 private fun calculateTip(amount: Double, tipPercent: Double = 15.0, roundUp: Boolean): String {
-    var tip = tipPercent / 100 * amount
+    var tip = tipPercent / 100 * amount // Calcula el monto de la propina.
     if (roundUp) {
-        tip = kotlin.math.ceil(tip)
+        tip = kotlin.math.ceil(tip) // Redondea la propina al siguiente entero si roundUp es verdadero.
     }
-    return NumberFormat.getCurrencyInstance().format(tip)
+    return NumberFormat.getCurrencyInstance().format(tip) // Formatea la propina como moneda.
 }
 
-@Preview(showBackground = true)
+/**
+ * Vista previa del diseño de la aplicación TipTime.
+ */
+@Preview(showBackground = true) // Muestra un fondo en la vista previa.
 @Composable
 fun TipTimeLayoutPreview() {
+    // Aplica el tema de la aplicación a la vista previa.
     TipTimeTheme {
-        TipTimeLayout()
+        TipTimeLayout() // Muestra el diseño principal de la aplicación.
     }
 }
