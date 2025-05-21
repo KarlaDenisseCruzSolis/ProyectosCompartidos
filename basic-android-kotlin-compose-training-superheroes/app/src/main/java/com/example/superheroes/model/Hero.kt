@@ -19,6 +19,16 @@ package com.example.superheroes.model
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
+/**
+ * Clase de datos que representa un Héroe.
+ *
+ * @param nameRes Una referencia al recurso de cadena para el nombre del héroe.
+ * Esta anotación indica que el Int esperado es un ID de recurso de cadena.
+ * @param descriptionRes Una referencia al recurso de cadena para la descripción del héroe.
+ * Esta anotación indica que el Int esperado es un ID de recurso de cadena.
+ * @param imageRes Una referencia al recurso drawable para la imagen del héroe.
+ * Esta anotación indica que el Int esperado es un ID de recurso drawable.
+ */
 data class Hero(
     @StringRes val nameRes: Int,
     @StringRes val descriptionRes: Int,

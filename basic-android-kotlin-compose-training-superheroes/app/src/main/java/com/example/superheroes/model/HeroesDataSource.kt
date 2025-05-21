@@ -18,7 +18,17 @@ package com.example.superheroes.model
 
 import com.example.superheroes.R
 
+/**
+ * Objeto de repositorio que proporciona una lista de objetos Hero.
+ * Este objeto actúa como una fuente de datos para la aplicación de Superhéroes.
+ */
 object HeroesRepository {
+    /**
+     * Una lista inmutable de objetos Hero.
+     * Cada Hero contiene un ID de recurso de cadena para su nombre,
+     * un ID de recurso de cadena para su descripción,
+     * y un ID de recurso drawable para su imagen.
+     */
     val heroes = listOf(
         Hero(
             nameRes = R.string.hero1,
