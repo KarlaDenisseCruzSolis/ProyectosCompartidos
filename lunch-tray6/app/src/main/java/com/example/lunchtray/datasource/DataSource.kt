@@ -20,9 +20,15 @@ import com.example.lunchtray.model.MenuItem.EntreeItem
 import com.example.lunchtray.model.MenuItem.SideDishItem
 
 /**
- * Map of available menu items to be displayed in the menu fragments.
+ * Objeto Singleton [DataSource] que proporciona mapas de elementos de menú disponibles
+ * para ser mostrados en los fragmentos del menú.
+ * Contiene listas predefinidas de platos principales, guarniciones y aderezos.
  */
 object DataSource {
+    /**
+     * Lista de elementos de menú de platos principales ([EntreeItem]) disponibles.
+     * Cada [EntreeItem] incluye un nombre, una descripción y un precio.
+     */
 
     val entreeMenuItems = listOf(
         EntreeItem(
@@ -49,6 +55,10 @@ object DataSource {
         )
     )
 
+    /**
+     * Lista de elementos de menú de guarniciones ([SideDishItem]) disponibles.
+     * Cada [SideDishItem] incluye un nombre, una descripción y un precio.
+     */
     val sideDishMenuItems = listOf(
         SideDishItem(
             name = "Summer Salad",
@@ -72,6 +82,10 @@ object DataSource {
         )
     )
 
+    /**
+     * Lista de elementos de menú de aderezos ([AccompanimentItem]) disponibles.
+     * Cada [AccompanimentItem] incluye un nombre, una descripción y un precio.
+     */
     val accompanimentMenuItems = listOf(
         AccompanimentItem(
             name = "Lunch Roll",

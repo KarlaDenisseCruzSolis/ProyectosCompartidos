@@ -15,10 +15,26 @@
  */
 package com.example.lunchtray.model
 
+/**
+ * Clase de datos que representa el estado de la interfaz de usuario del pedido.
+ *
+ * Esta clase contiene los elementos seleccionados por el usuario para su pedido,
+ * así como los cálculos de precios asociados.
+ *
+ * @property entree El [MenuItem.EntreeItem] seleccionado como plato principal. Es nulo si no se ha seleccionado ninguno.
+ * @property sideDish El [MenuItem.SideDishItem] seleccionado como guarnición. Es nulo si no se ha seleccionado ninguno.
+ * @property accompaniment El [MenuItem.AccompanimentItem] seleccionado como aderezo. Es nulo si no se ha seleccionado ninguno.
+ * @property itemTotalPrice El precio total de los elementos seleccionados antes de impuestos. Se inicializa en 0.0.
+ * @property orderTax El monto del impuesto calculado para el pedido. Se inicializa en 0.0.
+ * @property orderTotalPrice El precio total del pedido, incluyendo impuestos. Se inicializa en 0.0.
+ */
 data class OrderUiState(
+    // Selección del plato principal
     // Entree Selection
     val entree: MenuItem.EntreeItem? = null,
+    // Selección de la guarnición
     val sideDish: MenuItem.SideDishItem? = null,
+    // Selección del aderezo
     val accompaniment: MenuItem.AccompanimentItem? = null,
     val itemTotalPrice: Double = 0.0,
     val orderTax: Double = 0.0,
