@@ -20,11 +20,24 @@ import com.example.sports.R
 import com.example.sports.model.Sport
 
 /**
- * Sports data
+ * Objeto singleton que proporciona datos de deportes de manera local.
+ * Actúa como una fuente de datos estática para la aplicación, conteniendo
+ * una lista predefinida de objetos [Sport].
  */
-object LocalSportsDataProvider{
+object LocalSportsDataProvider {
+    /**
+     * Define un deporte predeterminado, que es el primer elemento de la lista de deportes.
+     * Esto puede ser útil para establecer una selección inicial o un valor por defecto.
+     */
     val defaultSport = getSportsData()[0]
 
+    /**
+     * Retorna una lista inmutable de objetos [Sport] que representan los datos de los deportes disponibles.
+     * Cada objeto [Sport] incluye detalles como el ID, los IDs de recursos para el título, subtítulo,
+     * imágenes, el número de jugadores y si es un deporte olímpico.
+     *
+     * @return Una [List] de [Sport] que contiene los datos de los deportes.
+     */
     fun getSportsData(): List<Sport> {
         return listOf(
             Sport(

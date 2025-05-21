@@ -20,7 +20,20 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 /**
- * Data model for Sport
+ * Modelo de datos para un Deporte.
+ *
+ * Esta clase de datos encapsula toda la información relevante para un deporte individual
+ * que se mostrará en la aplicación. Utiliza anotaciones para asegurar que los IDs de los recursos
+ * sean del tipo correcto (cadenas para textos y drawables para imágenes).
+ *
+ * @property id Un identificador único para el deporte.
+ * @property titleResourceId El ID del recurso de cadena para el título del deporte.
+ * @property subtitleResourceId El ID del recurso de cadena para el subtítulo o una breve descripción del deporte.
+ * @property playerCount El número de jugadores que participan en el deporte.
+ * @property olympic Un valor booleano que indica si el deporte es un deporte olímpico (true) o no (false).
+ * @property imageResourceId El ID del recurso drawable para la imagen principal del deporte (usada en la lista).
+ * @property sportsImageBanner El ID del recurso drawable para la imagen de banner del deporte (usada en la vista de detalles).
+ * @property sportDetails El ID del recurso de cadena para los detalles o la descripción completa del deporte.
  */
 data class Sport(
     val id: Int,

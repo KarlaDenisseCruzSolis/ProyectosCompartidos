@@ -75,8 +75,11 @@ import com.example.sports.ui.theme.SportsTheme
 import com.example.sports.utils.SportsContentType
 
 /**
- * Main composable that serves as container
- * which displays content according to [uiState] and [windowSize]
+ * Composable principal que actúa como contenedor y muestra el contenido según [uiState] y [windowSize].
+ * Es el punto de entrada principal para la UI de la aplicación Sports.
+ *
+ * @param windowSize La clase de tamaño de ancho de la ventana, utilizada para adaptar el diseño.
+ * @param onBackPressed La acción a ejecutar cuando se presiona el botón de retroceso.
  */
 @Composable
 fun SportsApp(
@@ -84,16 +87,16 @@ fun SportsApp(
     onBackPressed: () -> Unit,
 ) {
     val viewModel: SportsViewModel = viewModel()
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState() // Recolecta el estado de la UI del ViewModel como un State.
     val contentType = when (windowSize) {
-        WindowWidthSizeClass.Compact,
-        WindowWidthSizeClass.Medium -> SportsContentType.ListOnly
+        WindowWidthSizeClass.Compact,// Pantallas pequeñas (teléfonos en modo retrato).
+        WindowWidthSizeClass.Medium -> SportsContentType.ListOnly// Pantallas medianas (tabletas en modo retrato, teléfonos grandes en modo paisaje).
 
         WindowWidthSizeClass.Expanded -> SportsContentType.ListAndDetail
         else -> SportsContentType.ListOnly
     }
 
-    Scaffold(
+    Scaffold(// Scaffold proporciona una estructura de diseño básica para Material Design (barra superior, contenido principal, etc.).
         topBar = {
             SportsAppBar(
                 isShowingListPage = uiState.isShowingListPage,
@@ -102,6 +105,7 @@ fun SportsApp(
             )
         }
     ) { innerPadding ->
+        // Muestra un diseño de lista y detalle si el tipo de contenido lo permite.
         if (contentType == SportsContentType.ListAndDetail) {
             SportsListAndDetail(
                 sports = uiState.sportsList,
@@ -113,7 +117,7 @@ fun SportsApp(
                 contentPadding = innerPadding,
                 modifier = Modifier.fillMaxWidth()
             )
-        } else {
+        } else { // Si no es un diseño de lista y detalle, decide entre la lista o el detalle.
             if (uiState.isShowingListPage) {
                 SportsList(
                     sports = uiState.sportsList,
@@ -124,7 +128,7 @@ fun SportsApp(
                     modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_medium)),
                     contentPadding = innerPadding,
                 )
-            } else {
+            } else {// Muestra los detalles de un deporte.
                 SportsDetail(
                     selectedSport = uiState.currentSport,
                     contentPadding = innerPadding,
@@ -138,7 +142,12 @@ fun SportsApp(
 }
 
 /**
- * Composable that displays the topBar and displays back button if back navigation is possible.
+ * Composable que muestra la barra superior y un botón de retroceso si la navegación hacia atrás es posible.
+ *
+ * @param onBackButtonClick La acción a realizar cuando se hace clic en el botón de retroceso.
+ * @param isShowingListPage Booleano que indica si se está mostrando la página de la lista (verdadero) o la de detalles (falso).
+ * @param windowSize La clase de tamaño de ancho de la ventana, utilizada para determinar la visibilidad del botón de retroceso.
+ * @param modifier Modificador para aplicar a este Composable.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,6 +157,7 @@ fun SportsAppBar(
     windowSize: WindowWidthSizeClass,
     modifier: Modifier = Modifier
 ) {
+    // Determina si se está mostrando la página de detalles (cuando el tamaño de la ventana no es expandido y no se está mostrando la lista).
     val isShowingDetailPage = windowSize != WindowWidthSizeClass.Expanded && !isShowingListPage
     TopAppBar(
         title = {
@@ -170,7 +180,7 @@ fun SportsAppBar(
                     )
                 }
             }
-        } else {
+        } else { // Si no se está mostrando la página de detalles, se muestra una Box vacía para no tener icono de navegación.
             { Box {} }
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -180,6 +190,13 @@ fun SportsAppBar(
     )
 }
 
+/**
+ * Composable que muestra un elemento individual de la lista de deportes (tarjeta).
+ *
+ * @param sport El objeto [Sport] a mostrar.
+ * @param onItemClick La acción a realizar cuando se hace clic en la tarjeta del deporte.
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SportsListItem(
@@ -202,7 +219,7 @@ private fun SportsListItem(
                 sport = sport,
                 modifier = Modifier.size(dimensionResource(R.dimen.card_image_height))
             )
-            Column(
+            Column(// Columna para el texto del deporte (título, subtítulo, conteo de jugadores, estado olímpico).
                 modifier = Modifier
                     .padding(
                         vertical = dimensionResource(R.dimen.padding_small),
@@ -210,12 +227,12 @@ private fun SportsListItem(
                     )
                     .weight(1f)
             ) {
-                Text(
+                Text(// Título del deporte.
                     text = stringResource(sport.titleResourceId),
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = dimensionResource(R.dimen.card_text_vertical_space))
                 )
-                Text(
+                Text(// Subtítulo del deporte.
                     text = stringResource(sport.subtitleResourceId),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.secondary,
@@ -223,7 +240,7 @@ private fun SportsListItem(
                     maxLines = 3
                 )
                 Spacer(Modifier.weight(1f))
-                Row {
+                Row {// Conteo de jugadores.
                     Text(
                         text = pluralStringResource(
                             R.plurals.player_count_caption,
@@ -245,6 +262,12 @@ private fun SportsListItem(
     }
 }
 
+/**
+ * Composable que muestra la imagen de un elemento de la lista de deportes.
+ *
+ * @param sport El objeto [Sport] cuya imagen se mostrará.
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 private fun SportsListImageItem(sport: Sport, modifier: Modifier = Modifier) {
     Box(
@@ -259,6 +282,14 @@ private fun SportsListImageItem(sport: Sport, modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * Composable que muestra una lista desplazable de deportes utilizando LazyColumn.
+ *
+ * @param sports La lista de objetos [Sport] a mostrar.
+ * @param onClick La acción a realizar cuando se hace clic en un elemento de la lista.
+ * @param modifier Modificador para aplicar a este Composable.
+ * @param contentPadding El padding a aplicar al contenido de la lista.
+ */
 @Composable
 private fun SportsList(
     sports: List<Sport>,
@@ -280,6 +311,14 @@ private fun SportsList(
     }
 }
 
+/**
+ * Composable que muestra la pantalla de detalles de un deporte.
+ *
+ * @param selectedSport El objeto [Sport] cuyos detalles se mostrarán.
+ * @param onBackPressed La acción a realizar cuando se presiona el botón de retroceso.
+ * @param contentPadding El padding a aplicar al contenido de la pantalla de detalles.
+ * @param modifier Modificador para aplicar a este Composable.
+ */
 @Composable
 private fun SportsDetail(
     selectedSport: Sport,
@@ -366,6 +405,18 @@ private fun SportsDetail(
     }
 }
 
+/**
+ * Composable que muestra un diseño de lista y detalle para los deportes.
+ * Se utiliza en pantallas grandes (como tabletas en modo paisaje) donde ambos paneles pueden ser visibles.
+ *
+ * @param sports La lista de objetos [Sport] a mostrar en el panel de la lista.
+ * @param selectedSport El objeto [Sport] actualmente seleccionado para mostrar detalles.
+ * @param onClick La acción a realizar cuando se hace clic en un elemento de la lista.
+ * @param onBackPressed La acción a realizar cuando se presiona el botón de retroceso (generalmente para salir de la aplicación en este contexto).
+ * @param modifier Modificador para aplicar a este Composable.
+ * @param contentPadding El padding a aplicar al contenido.
+ */
+
 @Composable
 private fun SportsListAndDetail(
     sports: List<Sport>,
@@ -399,6 +450,9 @@ private fun SportsListAndDetail(
     }
 }
 
+/**
+ * Vista previa de un elemento individual de la lista de deportes.
+ */
 @Preview
 @Composable
 fun SportsListItemPreview() {
@@ -410,6 +464,9 @@ fun SportsListItemPreview() {
     }
 }
 
+/**
+ * Vista previa de la lista completa de deportes.
+ */
 @Preview
 @Composable
 fun SportsListPreview() {
@@ -423,7 +480,10 @@ fun SportsListPreview() {
     }
 }
 
-@Preview(device = Devices.TABLET)
+/**
+ * Vista previa del diseño de lista y detalle para tabletas (modo paisaje).
+ */
+@Preview(device = Devices.TABLET)// Vista previa en un dispositivo de tableta.
 @Composable
 fun SportsListAndDetailsPreview() {
     SportsTheme {

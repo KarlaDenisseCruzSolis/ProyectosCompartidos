@@ -35,18 +35,32 @@ import com.example.sports.ui.SportsApp
 import com.example.sports.ui.theme.SportsTheme
 
 /**
- * Activity for Sports app
+ * Actividad principal de la aplicación Sports.
+ * Esta es la clase de punto de entrada para la aplicación.
  */
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class) // Permite el uso de APIs experimentales de Material 3 para clases de tamaño de ventana.
 class MainActivity : ComponentActivity() {
+    /**
+     * Se llama cuando la actividad se crea por primera vez.
+     * Aquí se realiza la configuración inicial de la UI de la aplicación.
+     *
+     * @param savedInstanceState Si la actividad está siendo reinicializada después de
+     * haber sido cerrada previamente, este Bundle contiene los datos que suministró
+     * más recientemente en [onSaveInstanceState]. De lo contrario, es nulo.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
+        enableEdgeToEdge() // Habilita el modo de pantalla completa, permitiendo que el contenido se extienda hasta los bordes de la pantalla.
+        super.onCreate(savedInstanceState) // Llama a la implementación de la superclase.
         setContent {
+            // Aplica el tema definido para la aplicación Sports.
             SportsTheme {
+                // Obtiene la dirección de diseño local (por ejemplo, LTR o RTL).
                 val layoutDirection = LocalLayoutDirection.current
+                // Superficie de Material Design para contener el contenido de la aplicación.
                 Surface(
                     modifier = Modifier
+                        // Aplica un padding al inicio y al final para evitar que el contenido
+                        // se superponga con las barras del sistema (como la barra de estado o la barra de navegación).
                         .padding(
                             start = WindowInsets.safeDrawing.asPaddingValues()
                                 .calculateStartPadding(layoutDirection),
@@ -54,10 +68,12 @@ class MainActivity : ComponentActivity() {
                                 .calculateEndPadding(layoutDirection)
                         )
                 ) {
+                    // Calcula la clase de tamaño de ventana para determinar el diseño apropiado.
                     val windowSize = calculateWindowSizeClass(this)
+                    // Llama al Composable principal de la aplicación Sports.
                     SportsApp(
-                        windowSize = windowSize.widthSizeClass,
-                        onBackPressed = { finish() }
+                        windowSize = windowSize.widthSizeClass, // Pasa la clase de tamaño de ancho de la ventana.
+                        onBackPressed = { finish() } // Define la acción al presionar el botón de retroceso: finaliza la actividad.
                     )
                 }
             }
