@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package com.example.waterme
+package com.example.waterme // Define el paquete de la aplicación
 
-import android.app.Application
-import com.example.waterme.data.AppContainer
-import com.example.waterme.data.DefaultAppContainer
+import android.app.Application // Importa la clase Application base de Android
+import com.example.waterme.data.AppContainer // Importa la interfaz o clase contenedora de dependencias
+import com.example.waterme.data.DefaultAppContainer // Importa la implementación por defecto del contenedor
 
-class WaterMeApplication : Application() {
+class WaterMeApplication : Application() { // Clase que extiende Application para configuración global
     /** AppContainer instance used by the rest of classes to obtain dependencies */
-    lateinit var container: AppContainer
-    override fun onCreate() {
-        super.onCreate()
-        container = DefaultAppContainer(this)
+    lateinit var container: AppContainer // Variable para almacenar el contenedor de dependencias, inicializada luego
+    override fun onCreate() { // Método llamado al crear la aplicación (antes que cualquier activity)
+        super.onCreate() // Llama a la implementación base para inicialización estándar
+        container = DefaultAppContainer(this) // Inicializa el contenedor con la implementación por defecto, pasando el contexto
     }
 }
