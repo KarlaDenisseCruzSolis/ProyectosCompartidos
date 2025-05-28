@@ -20,7 +20,12 @@ import androidx.annotation.StringRes
 import com.example.woof.R
 
 /**
- * A data class to represent the information presented in the dog card
+ * Una clase de datos para representar la información que se presenta en la tarjeta del perro.
+ *
+ * @param imageResourceId El ID del recurso drawable para la imagen del perro.
+ * @param name El ID del recurso de cadena para el nombre del perro.
+ * @param age La edad del perro en años.
+ * @param hobbies El ID del recurso de cadena para los hobbies del perro.
  */
 data class Dog(
     @DrawableRes val imageResourceId: Int,
@@ -29,6 +34,10 @@ data class Dog(
     @StringRes val hobbies: Int
 )
 
+/**
+ * Una lista inmutable de objetos [Dog] que representa los datos de los perros disponibles en la aplicación.
+ * Cada objeto [Dog] contiene el ID de recurso de su imagen, el ID de recurso de su nombre, su edad, y el ID de recurso de sus hobbies.
+ */
 val dogs = listOf(
     Dog(R.drawable.koda, R.string.dog_name_1, 2, R.string.dog_description_1),
     Dog(R.drawable.lola, R.string.dog_name_2, 16, R.string.dog_description_2),
