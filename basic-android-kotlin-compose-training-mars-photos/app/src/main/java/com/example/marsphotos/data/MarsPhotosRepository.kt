@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.marsphotos.data
+package com.example.marsphotos.data // Declara el paquete al que pertenece el archivo, útil para la organización del código fuente
 
-import com.example.marsphotos.model.MarsPhoto
-import com.example.marsphotos.network.MarsApiService
+import com.example.marsphotos.model.MarsPhoto // Importa la clase MarsPhoto, que representa una foto de Marte
+import com.example.marsphotos.network.MarsApiService // Importa la interfaz MarsApiService, que define las llamadas a la API
 
 /**
  * Repository that fetch mars photos list from marsApi.
  */
-interface MarsPhotosRepository {
+interface MarsPhotosRepository { // Define una interfaz para un repositorio que obtiene fotos de Marte desde la API
     /** Fetches list of MarsPhoto from marsApi */
-    suspend fun getMarsPhotos(): List<MarsPhoto>
+    suspend fun getMarsPhotos(): List<MarsPhoto> // Declara una función suspendida que devuelve una lista de objetos MarsPhoto
 }
 
 /**
  * Network Implementation of Repository that fetch mars photos list from marsApi.
  */
-class NetworkMarsPhotosRepository(
-    private val marsApiService: MarsApiService
-) : MarsPhotosRepository {
-    /** Fetches list of MarsPhoto from marsApi*/
-    override suspend fun getMarsPhotos(): List<MarsPhoto> = marsApiService.getPhotos()
+class NetworkMarsPhotosRepository( // Define una clase que implementa MarsPhotosRepository usando la red
+    private val marsApiService: MarsApiService // Recibe como parámetro el servicio Retrofit para conectarse a la API
+) : MarsPhotosRepository { // Implementa la interfaz MarsPhotosRepository
+    /** Fetches list of MarsPhoto from marsApi */
+    override suspend fun getMarsPhotos(): List<MarsPhoto> = marsApiService.getPhotos() // Implementa la función getMarsPhotos usando el método getPhotos() del servicio de red
 }

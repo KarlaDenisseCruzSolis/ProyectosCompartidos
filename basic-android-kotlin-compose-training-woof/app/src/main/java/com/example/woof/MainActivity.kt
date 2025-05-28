@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+// Paquete principal de la app
 package com.example.woof
 
+// Importaciones necesarias para componer la UI, gestionar estados, temas, recursos y elementos visuales
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,31 +27,14 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -62,110 +47,83 @@ import com.example.woof.data.Dog
 import com.example.woof.data.dogs
 import com.example.woof.ui.theme.WoofTheme
 
-/**
- * La actividad principal de la aplicación Woof.
- * Extiende ComponentActivity, que es la clase base para actividades que usan Jetpack Compose.
- */
+// Actividad principal de la app
 class MainActivity : ComponentActivity() {
-    /**
-     * Llamado cuando la actividad se crea por primera vez.
-     * Aquí se configura la interfaz de usuario de la aplicación.
-     *
-     * @param savedInstanceState Si la actividad está siendo re-inicializada después de haber sido
-     * previamente cerrada, este Bundle contiene los datos que suministró más recientemente en
-     * [onSaveInstanceState]. De lo contrario, es nulo.
-     */
+    // Método que se ejecuta al crear la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // Establece el contenido de la interfaz de usuario de la actividad utilizando Jetpack Compose.
-        setContent {
-            // Aplica el tema definido para la aplicación Woof.
-            WoofTheme {
-                // Un contenedor de superficie que usa el color 'background' del tema.
-                Surface(
-                    modifier = Modifier.fillMaxSize() // El modificador fillMaxSize() hace que la superficie ocupe todo el espacio disponible.
+        super.onCreate(savedInstanceState) // Llama al método onCreate de la clase padre
+        setContent { // Establece el contenido visual de la app
+            WoofTheme { // Aplica el tema personalizado Woof
+                Surface( // Crea una superficie base que usa el color de fondo del tema
+                    modifier = Modifier.fillMaxSize() // Hace que ocupe todo el tamaño de la pantalla
                 ) {
-                    WoofApp() // Llama a la función componible WoofApp, que define el diseño principal de la aplicación.
+                    WoofApp() // Llama al composable principal de la app
                 }
             }
         }
     }
 }
 
-/**
- * Composable que muestra una barra de aplicación y una lista de perros.
- */
+// Composable que muestra el top app bar y la lista de perros
 @Composable
 fun WoofApp() {
-    // Scaffold proporciona una estructura de diseño básica para Material Design.
-    Scaffold(
+    Scaffold( // Composable que proporciona estructura de diseño con top bar y contenido
         topBar = {
-            WoofTopAppBar() // Define la barra superior de la aplicación.
+            WoofTopAppBar() // Composable que dibuja la barra superior de la app
         }
-    ) { it ->
-        // LazyColumn es un componible que muestra elementos en una lista de desplazamiento vertical.
-        // Solo renderiza los elementos visibles, lo que lo hace eficiente para listas grandes.
-        LazyColumn(contentPadding = it) { // Aplica el padding del Scaffold al contenido de la lista.
-            items(dogs) { // Itera sobre la lista de objetos Dog.
-                // Muestra un elemento individual de la lista de perros.
+    ) { it -> // it es el padding proporcionado por el Scaffold
+        LazyColumn(contentPadding = it) { // Lista perezosa que muestra los elementos
+            items(dogs) { // Recorre cada perro de la lista dogs
                 DogItem(
-                    dog = it, // El objeto Dog para este elemento.
-                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)) // Añade un padding pequeño a cada elemento.
+                    dog = it, // Pasa el objeto Dog actual
+                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small)) // Aplica padding
                 )
             }
         }
     }
 }
 
-/**
- * Composable que muestra un elemento de lista que contiene el icono de un perro y su información.
- *
- * @param dog contiene los datos que rellenan el elemento de la lista.
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que representa una tarjeta individual para cada perro
 @Composable
 fun DogItem(
-    dog: Dog,
-    modifier: Modifier = Modifier
+    dog: Dog, // Objeto Dog a mostrar
+    modifier: Modifier = Modifier // Modificadores opcionales
 ) {
-    // Estado mutable para controlar si la información del perro está expandida o colapsada.
-    var expanded by remember { mutableStateOf(false) }
-    // Tarjeta de Material Design para agrupar el contenido del elemento del perro.
-    Card(
-        modifier = modifier
+    var expanded by remember { mutableStateOf(false) } // Estado para saber si está expandido o no
+
+    Card( // Contenedor visual tipo tarjeta
+        modifier = modifier // Aplica los modificadores recibidos
     ) {
-        // Columna que contiene el contenido del elemento del perro.
         Column(
             modifier = Modifier
-                .animateContentSize( // Anima los cambios de tamaño del contenido.
-                    animationSpec = spring( // Especifica una animación de resorte.
-                        dampingRatio = Spring.DampingRatioNoBouncy, // Sin efecto de rebote.
-                        stiffness = Spring.StiffnessMedium // Rigidez media de la animación.
+                .animateContentSize( // Anima el cambio de tamaño del contenido
+                    animationSpec = spring( // Define la animación tipo resorte
+                        dampingRatio = Spring.DampingRatioNoBouncy, // Sin rebote
+                        stiffness = Spring.StiffnessMedium // Rigidez media
                     )
                 )
         ) {
-            // Fila que contiene el icono del perro, la información básica y el botón de expansión.
             Row(
                 modifier = Modifier
-                    .fillMaxWidth() // La fila ocupa todo el ancho disponible.
-                    .padding(dimensionResource(R.dimen.padding_small)) // Añade padding a la fila.
+                    .fillMaxWidth() // Ocupa todo el ancho disponible
+                    .padding(dimensionResource(R.dimen.padding_small)) // Aplica padding
             ) {
-                DogIcon(dog.imageResourceId) // Muestra el icono del perro.
-                DogInformation(dog.name, dog.age) // Muestra el nombre y la edad del perro.
-                Spacer(Modifier.weight(1f)) // Espacio que ocupa el resto del ancho disponible.
-                // Botón de expansión/colapso para mostrar/ocultar los hobbies del perro.
-                DogItemButton(
-                    expanded = expanded, // Pasa el estado actual de expansión.
-                    onClick = { expanded = !expanded }, // Cambia el estado de expansión al hacer clic.
+                DogIcon(dog.imageResourceId) // Muestra la imagen del perro
+                DogInformation(dog.name, dog.age) // Muestra el nombre y edad
+                Spacer(Modifier.weight(1f)) // Empuja el botón al final del row
+                DogItemButton( // Botón para expandir/colapsar
+                    expanded = expanded,
+                    onClick = { expanded = !expanded }, // Cambia el estado al hacer clic
                 )
             }
-            if (expanded) {
+            if (expanded) { // Si está expandido, muestra los hobbies
                 DogHobby(
-                    dog.hobbies, modifier = Modifier.padding(
-                        start = dimensionResource(R.dimen.padding_medium),// Padding inicial.
-                        top = dimensionResource(R.dimen.padding_small),// Padding superior.
-                        bottom = dimensionResource(R.dimen.padding_medium),// Padding inferior.
-                        end = dimensionResource(R.dimen.padding_medium)// Padding final.
+                    dog.hobbies,
+                    modifier = Modifier.padding(
+                        start = dimensionResource(R.dimen.padding_medium),
+                        top = dimensionResource(R.dimen.padding_small),
+                        bottom = dimensionResource(R.dimen.padding_medium),
+                        end = dimensionResource(R.dimen.padding_medium)
                     )
                 )
             }
@@ -173,164 +131,121 @@ fun DogItem(
     }
 }
 
-/**
- * Composable que muestra un botón que es clicable y muestra un icono de expandir más o expandir menos.
- *
- * @param expanded representa si el icono de expandir más o expandir menos es visible.
- * @param onClick es la acción que ocurre cuando se hace clic en el botón.
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que muestra un botón de expandir/colapsar
 @Composable
 private fun DogItemButton(
-    expanded: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    expanded: Boolean, // Estado actual del botón
+    onClick: () -> Unit, // Acción al hacer clic
+    modifier: Modifier = Modifier // Modificadores opcionales
 ) {
-    // Botón de icono clicable.
-    IconButton(
-        onClick = onClick, // La acción a ejecutar al hacer clic.
-        modifier = modifier
+    IconButton( // Botón con ícono
+        onClick = onClick, // Ejecuta la función al hacer clic
+        modifier = modifier // Aplica modificadores
     ) {
-        // Icono que cambia entre ExpandLess y ExpandMore dependiendo del estado 'expanded'.
-        Icon(
+        Icon( // Muestra el ícono expandir más o menos
             imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-            contentDescription = stringResource(R.string.expand_button_content_description), // Descripción de contenido para accesibilidad.
-            tint = MaterialTheme.colorScheme.secondary // Color del icono.
+            contentDescription = stringResource(R.string.expand_button_content_description), // Descripción accesible
+            tint = MaterialTheme.colorScheme.secondary // Color del ícono
         )
     }
 }
 
-/**
- * Composable que muestra una barra superior con un icono y texto.
- *
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que muestra la barra superior de la app
 @Composable
 fun WoofTopAppBar(modifier: Modifier = Modifier) {
-    // Barra superior centrada de Material Design 3.
-    CenterAlignedTopAppBar(
+    CenterAlignedTopAppBar( // Barra superior centrada
         title = {
-            // Fila que contiene el icono del logo y el texto del título de la aplicación.
             Row(
-                verticalAlignment = Alignment.CenterVertically // Alinea verticalmente los elementos al centro.
+                verticalAlignment = Alignment.CenterVertically // Centra verticalmente los elementos del row
             ) {
                 Image(
                     modifier = Modifier
-                        .size(dimensionResource(R.dimen.image_size))// Establece el tamaño de la imagen.
-                        .padding(dimensionResource(R.dimen.padding_small)),// Añade padding a la imagen.
-                    painter = painterResource(R.drawable.ic_woof_logo),// Carga la imagen del logo.
-
-                    // La descripción de contenido no es necesaria aquí: la imagen es decorativa, y
-                    // establecer una descripción de contenido nula permite que los servicios de accesibilidad
-                    // omitan este elemento durante la navegación.
-
-                    contentDescription = null
+                        .size(dimensionResource(R.dimen.image_size)) // Tamaño de la imagen
+                        .padding(dimensionResource(R.dimen.padding_small)), // Padding
+                    painter = painterResource(R.drawable.ic_woof_logo), // Imagen del logo
+                    contentDescription = null // No se necesita descripción (imagen decorativa)
                 )
                 Text(
-                    text = stringResource(R.string.app_name),// Texto del título de la aplicación.
-                    style = MaterialTheme.typography.displayLarge // Aplica un estilo de tipografía grande.
+                    text = stringResource(R.string.app_name), // Nombre de la app
+                    style = MaterialTheme.typography.displayLarge // Estilo del texto
                 )
             }
         },
-        modifier = modifier
+        modifier = modifier // Aplica modificadores
     )
 }
 
-/**
- * Composable que muestra una foto de un perro.
- *
- * @param dogIcon es el ID de recurso para la imagen del perro.
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que muestra la imagen del perro
 @Composable
 fun DogIcon(
-    @DrawableRes dogIcon: Int,
+    @DrawableRes dogIcon: Int, // Recurso drawable del perro
     modifier: Modifier = Modifier
 ) {
     Image(
         modifier = modifier
-            .size(dimensionResource(R.dimen.image_size))// Establece el tamaño de la imagen.
-            .padding(dimensionResource(R.dimen.padding_small))// Añade padding.
-            .clip(MaterialTheme.shapes.small),// Recorta la imagen con esquinas redondeadas.
-        contentScale = ContentScale.Crop,// Escala la imagen para que recorte el exceso y llene los límites.
-        painter = painterResource(dogIcon),// Carga la imagen del perro.
-
-        // La descripción de contenido no es necesaria aquí: la imagen es decorativa, y establecer
-        // una descripción de contenido nula permite que los servicios de accesibilidad omitan
-        // este elemento durante la navegación.
-        contentDescription = null
+            .size(dimensionResource(R.dimen.image_size)) // Tamaño de la imagen
+            .padding(dimensionResource(R.dimen.padding_small)) // Padding
+            .clip(MaterialTheme.shapes.small), // Recorta la imagen con esquinas redondeadas
+        contentScale = ContentScale.Crop, // Ajuste de imagen para llenar el contenedor
+        painter = painterResource(dogIcon), // Imagen del recurso
+        contentDescription = null // Imagen decorativa sin descripción
     )
 }
 
-/**
- * Composable que muestra el nombre y la edad de un perro.
- *
- * @param dogName es el ID de recurso para la cadena del nombre del perro.
- * @param dogAge es el Int que representa la edad del perro.
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que muestra el nombre y edad del perro
 @Composable
 fun DogInformation(
-    @StringRes dogName: Int,
-    dogAge: Int,
+    @StringRes dogName: Int, // Recurso de string del nombre
+    dogAge: Int, // Edad del perro
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {// Columna que contiene el nombre y la edad del perro.
+    Column(modifier = modifier) {
         Text(
-            text = stringResource(dogName), // Muestra el nombre del perro.
-            style = MaterialTheme.typography.displayMedium, // Aplica un estilo de tipografía.
-            modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))// Añade padding superior.
+            text = stringResource(dogName), // Texto del nombre
+            style = MaterialTheme.typography.displayMedium, // Estilo de texto
+            modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small)) // Padding superior
         )
         Text(
-            text = stringResource(R.string.years_old, dogAge),// Muestra la edad del perro.
-            style = MaterialTheme.typography.bodyLarge // Aplica un estilo de tipografía.
+            text = stringResource(R.string.years_old, dogAge), // Texto con edad
+            style = MaterialTheme.typography.bodyLarge // Estilo de texto
         )
     }
 }
 
-/**
- * Composable que muestra los hobbies de un perro.
- *
- * @param dogHobby es el ID de recurso para la cadena de texto del hobby a mostrar.
- * @param modifier modificadores para aplicar a este componible.
- */
+// Composable que muestra los hobbies del perro
 @Composable
 fun DogHobby(
-    @StringRes dogHobby: Int,
+    @StringRes dogHobby: Int, // Recurso de string con el hobby
     modifier: Modifier = Modifier
 ) {
-    Column(// Columna que contiene el título "About" y el texto del hobby.
-        modifier = modifier
+    Column(
+        modifier = modifier // Aplica modificadores
     ) {
         Text(
-            text = stringResource(R.string.about),// Texto del título "About".
-            style = MaterialTheme.typography.labelSmall// Aplica un estilo de tipografía.
+            text = stringResource(R.string.about), // Texto "Acerca de"
+            style = MaterialTheme.typography.labelSmall // Estilo de etiqueta
         )
         Text(
-            text = stringResource(dogHobby),// Muestra el texto del hobby.
-            style = MaterialTheme.typography.bodyLarge// Aplica un estilo de tipografía.
+            text = stringResource(dogHobby), // Texto con el hobby
+            style = MaterialTheme.typography.bodyLarge // Estilo principal
         )
     }
 }
 
-/**
- * Composable que muestra cómo se ve la UI de la aplicación en tema claro en la pestaña de diseño.
- */
+// Vista previa del diseño en modo claro
 @Preview
 @Composable
 fun WoofPreview() {
-    WoofTheme(darkTheme = false) {// Aplica el tema Woof con el tema oscuro deshabilitado.
-        WoofApp()// Muestra la aplicación Woof.
+    WoofTheme(darkTheme = false) { // Aplica tema claro
+        WoofApp() // Muestra la app
     }
 }
 
-/**
- * Composable que muestra cómo se ve la UI de la aplicación en tema oscuro en la pestaña de diseño.
- */
+// Vista previa del diseño en modo oscuro
 @Preview
 @Composable
 fun WoofDarkThemePreview() {
-    WoofTheme(darkTheme = true) {// Aplica el tema Woof con el tema oscuro habilitado.
-        WoofApp()// Muestra la aplicación Woof.
+    WoofTheme(darkTheme = true) { // Aplica tema oscuro
+        WoofApp() // Muestra la app
     }
 }
